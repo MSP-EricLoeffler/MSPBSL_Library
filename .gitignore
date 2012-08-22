@@ -1,0 +1,17 @@
+# VC++ Files
+
+*.vcxproj*
+*.opensdf
+*.sdf
+*.suo
+*.sln
+Debug
+Win32
+ipch
+
+# CMake files
+
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+
