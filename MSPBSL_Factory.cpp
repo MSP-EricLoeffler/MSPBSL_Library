@@ -46,10 +46,17 @@
 #include "MSPBSL_Connection5xx.h"
 // Packet Handlers
 #include "MSPBSL_PacketHandler5xxUART.h"
+
+#ifdef MSPBSL_USB
 #include "MSPBSL_PacketHandler5xxUSB.h"
+#endif
+
 // Physical Connections Handlers
 #include "MSPBSL_PhysicalInterfaceSerialUART.h"
+
+#ifdef MSPBSL_USB
 #include "MSPBSL_PhysicalInterfaceUSB.h"
+#endif
 
 // to do: eventuall put this in a txt file
 
