@@ -42,7 +42,7 @@
 #pragma once
 #include <string>
 #include "MSPBSL_Connection_v1_4x.h"
-#include "MSPBSL_Connection2xx.h"
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
 
 class MSPBSL_Connection_v1_3x : public MSPBSL_Connection_v1_4x
 {

@@ -41,11 +41,11 @@
 
 #pragma once
 #include <string>
-#include "MSPBSL_Connection2xx.h"
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
 #define YES 0x01
 #define NO  0x00
 
-class MSPBSL_Connection_v1_10 : public MSPBSL_Connection2xx
+class MSPBSL_Connection_v1_10 : public MSPBSL_Connection1xx_2xx_4xx
 {
 private:
 	uint8_t patch_loaded;

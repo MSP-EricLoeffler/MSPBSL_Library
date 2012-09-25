@@ -59,7 +59,7 @@ MSPBSL_Connection_v1_3x::~MSPBSL_Connection_v1_3x(void)
 /***************************************************************************//**
 * Modified RX Data Block Command
 *
-* Creates a databuffer containing a standard 2xx RX Data Block Command, passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Data Block Command, passes 
 * this on to the Packet Handler layer for sending, then reads back and verifies the data.  
 * Note: This command tells the BSL to Receive a data block, so it will send 
 * data from the Host.
@@ -76,8 +76,8 @@ uint16_t MSPBSL_Connection_v1_3x::RX_DataBlock( uint8_t* data, uint32_t startAdd
 	uint16_t retvalue = 0;
 	uint8_t* retbuf = new uint8_t[numBytes];
 
-	retvalue = MSPBSL_Connection2xx::RX_DataBlock(data, startAddr16, numBytes );
-	retvalue |= MSPBSL_Connection2xx::TX_DataBlock(retbuf, startAddr16, numBytes );
+	retvalue = MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(data, startAddr16, numBytes );
+	retvalue |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(retbuf, startAddr16, numBytes );
 
 	for(uint32_t i=0 ; i<numBytes ; i++ )
 	{
@@ -103,5 +103,5 @@ uint16_t MSPBSL_Connection_v1_3x::RX_DataBlock( uint8_t* data, uint32_t startAdd
 ******************************************************************************/
 string MSPBSL_Connection_v1_3x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection2xx::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

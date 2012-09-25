@@ -44,7 +44,7 @@
 *        
 * \return a MSPBSL_Connection_v1_4x class
 ******************************************************************************/
-MSPBSL_Connection_v1_4x::MSPBSL_Connection_v1_4x(string initString) : MSPBSL_Connection2xx( initString)
+MSPBSL_Connection_v1_4x::MSPBSL_Connection_v1_4x(string initString) : MSPBSL_Connection1xx_2xx_4xx( initString)
 {
 }
 
@@ -135,5 +135,5 @@ uint16_t MSPBSL_Connection_v1_4x::eraseCheck( uint16_t startAddr, uint32_t numBy
 ******************************************************************************/
 string MSPBSL_Connection_v1_4x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection2xx::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

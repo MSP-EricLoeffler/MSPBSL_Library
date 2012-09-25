@@ -59,9 +59,9 @@ MSPBSL_Connection_v2_1x::~MSPBSL_Connection_v2_1x(void)
 
 
 /***************************************************************************//**
-* The 2xx Set Memory Offset Command
+* The 1xx_2xx_4xx Set Memory Offset Command
 *
-* Creates a databuffer containing a standard 2xx Set Memory Offset Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Set Memory Offset Command, and passes 
 * this on to the Packet Handler layer for sending.
 *
 * Note: This Command is implemented in BSL versions 2.1x and above only.
@@ -105,5 +105,5 @@ uint16_t MSPBSL_Connection_v2_1x::SetMemOffset(uint16_t OffsetValue)
 ******************************************************************************/
 string MSPBSL_Connection_v2_1x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection2xx::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

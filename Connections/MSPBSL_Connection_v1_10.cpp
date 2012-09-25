@@ -44,7 +44,7 @@
 *        
 * \return a MSPBSL_Connection_v1_10 class
 ******************************************************************************/
-MSPBSL_Connection_v1_10::MSPBSL_Connection_v1_10(string initString)   : MSPBSL_Connection2xx( initString)
+MSPBSL_Connection_v1_10::MSPBSL_Connection_v1_10(string initString)   : MSPBSL_Connection1xx_2xx_4xx( initString)
 {
 	MSPBSL_Connection_v1_10::patch_loaded=NO;
 }
@@ -153,7 +153,7 @@ uint16_t MSPBSL_Connection_v1_10::TX_DataBlock( uint8_t* data, uint32_t startAdd
 *
 * Loads PATCH.TXT if it's not already been done yet.
 *
-* Creates a databuffer containing a standard 2xx RX Data Block Command, passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Data Block Command, passes 
 * this on to the Packet Handler layer for sending, then reads back and verifies the data.
 * Note: This command tells the BSL to receive a data block, so it will send 
 * data from the Host
@@ -242,9 +242,9 @@ uint16_t MSPBSL_Connection_v1_10::RX_DataBlock( uint8_t* data, uint32_t startAdd
 
 
 /***************************************************************************//**
-* The 2xx Standard Mass Erase Command
+* The 1xx_2xx_4xx Standard Mass Erase Command
 *
-* Creates a databuffer containing a standard 2xx Mass Erase Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Mass Erase Command, and passes 
 * this on to the Packet Handler layer for sending. Repeats this several times
 * to meet the cumulative mass erase time specified in the datasheet.
 *        
@@ -256,7 +256,7 @@ uint16_t MSPBSL_Connection_v1_10::massErase(void)
 	uint16_t retbuf=0;
 	for(uint8_t i=0; i<20 ; i++)
 	{
-		retbuf |= MSPBSL_Connection2xx::massErase();
+		retbuf |= MSPBSL_Connection1xx_2xx_4xx::massErase();
 	}
 	return(retbuf);
 }
@@ -329,8 +329,8 @@ uint16_t MSPBSL_Connection_v1_10::load_patch(void)
 							};
 	retbuf |= setPC(0x0C22);
 	retbuf |= RX_Password( passwordbuffer );	// send password a second time as described under 5.2 in SLAU319B
-	retbuf |= MSPBSL_Connection2xx::RX_DataBlock(patchfile , startAddr , numBytes);
-	retbuf |= MSPBSL_Connection2xx::TX_DataBlock(verificationbuffer , startAddr , numBytes);
+	retbuf |= MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(patchfile , startAddr , numBytes);
+	retbuf |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(verificationbuffer , startAddr , numBytes);
 
 	for(i=0; i<194; i++)
 	{
@@ -354,9 +354,9 @@ uint16_t MSPBSL_Connection_v1_10::load_patch(void)
 }
 
 /***************************************************************************//**
-* Modified 2xx RX Password Command
+* Modified 1xx_2xx_4xx RX Password Command
 *
-* Creates a databuffer containing a standard 2xx RX Password Command and passes   
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Password Command and passes   
 * this on to the Packet Handler layer for sending.
 *
 * This function saves the password in a buffer as it is needed twice during the
@@ -398,13 +398,13 @@ uint16_t MSPBSL_Connection_v1_10::RX_Password(uint8_t* password)
 }
 
 /***************************************************************************//**
-* The 2xx Default RX Password Command
+* The 1xx_2xx_4xx Default RX Password Command
 *
-* Creates a databuffer containing a standard 2xx RX Password Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Password Command, and passes 
 * this on to the Packet Handler layer for sending.  
 * Note: This command accepts no parameters as it sends a default (32x 0xFF) password
 * Note(2): This command overwrites the password in the password buffer of the
-* Modified 2xx RX Password Command
+* Modified 1xx_2xx_4xx RX Password Command
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
@@ -461,5 +461,5 @@ uint16_t MSPBSL_Connection_v1_10::eraseCheck( uint16_t startAddr, uint32_t numBy
 ******************************************************************************/
 string MSPBSL_Connection_v1_10::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection2xx::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

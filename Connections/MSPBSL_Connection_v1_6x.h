@@ -41,9 +41,9 @@
 
 #pragma once
 #include <string>
-#include "MSPBSL_Connection2xx.h"
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
 
-class MSPBSL_Connection_v1_6x : public MSPBSL_Connection2xx
+class MSPBSL_Connection_v1_6x : public MSPBSL_Connection1xx_2xx_4xx
 {
 public:
 

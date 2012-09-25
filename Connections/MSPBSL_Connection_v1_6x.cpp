@@ -44,7 +44,7 @@
 *        
 * \return a MSPBSL_Connection_v1_6x class
 ******************************************************************************/
-MSPBSL_Connection_v1_6x::MSPBSL_Connection_v1_6x(string initString) : MSPBSL_Connection2xx( initString)
+MSPBSL_Connection_v1_6x::MSPBSL_Connection_v1_6x(string initString) : MSPBSL_Connection1xx_2xx_4xx( initString)
 {
 }
 
@@ -60,9 +60,9 @@ MSPBSL_Connection_v1_6x::~MSPBSL_Connection_v1_6x(void)
 
 
 /***************************************************************************//**
-* The 2xx Change Baudrate Command
+* The 1xx_2xx_4xx Change Baudrate Command
 *
-* Creates a databuffer containing a standard 2xx Change Baudrate Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Change Baudrate Command, and passes 
 * this on to the Packet Handler layer for sending.
 *
 * Note: This Command is only implemented in BSL versions 1.60 and above
@@ -109,5 +109,5 @@ uint16_t MSPBSL_Connection_v1_6x::ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_
 ******************************************************************************/
 string MSPBSL_Connection_v1_6x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection2xx::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

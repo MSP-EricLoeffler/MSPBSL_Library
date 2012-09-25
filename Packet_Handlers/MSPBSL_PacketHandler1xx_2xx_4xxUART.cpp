@@ -1,5 +1,5 @@
 /*
- * MSPBSL_PacketHandler2xxUART
+ * MSPBSL_PacketHandler1xx_2xx_4xxUART
  *
  * A class file to corrrectly form packets for transmission via Serial UART
  *
@@ -35,7 +35,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
-#include "MSPBSL_PacketHandler2xxUART.h"
+#include "MSPBSL_PacketHandler1xx_2xx_4xxUART.h"
 #include "MSPBSL_CRCEngine.h"
 #include "MSPBSL_PhysicalInterfaceSerialUART.h"
 #define MAX_PACKET_SIZE 260
@@ -43,14 +43,14 @@
 /***************************************************************************//**
 * Object Constructor.
 *
-* Creates a new MSPBSL_PacketHandler2xxUART object according to the
+* Creates a new MSPBSL_PacketHandler1xx_2xx_4xxUART object according to the
 * supplied parameters
 * 
 * \param initString A string containing a list of parameters for this obj
 *
-* \return a new MSPBSL_PacketHandler2xxUART object
+* \return a new MSPBSL_PacketHandler1xx_2xx_4xxUART object
 ******************************************************************************/
-MSPBSL_PacketHandler2xxUART::MSPBSL_PacketHandler2xxUART(string initString)
+MSPBSL_PacketHandler1xx_2xx_4xxUART::MSPBSL_PacketHandler1xx_2xx_4xxUART(string initString)
 {
 }
 
@@ -60,21 +60,21 @@ MSPBSL_PacketHandler2xxUART::MSPBSL_PacketHandler2xxUART(string initString)
 * Destructor for this class
 *
 ******************************************************************************/
-MSPBSL_PacketHandler2xxUART::~MSPBSL_PacketHandler2xxUART(void)
+MSPBSL_PacketHandler1xx_2xx_4xxUART::~MSPBSL_PacketHandler1xx_2xx_4xxUART(void)
 {
 }
 	
 /***************************************************************************//**
-* 2xx UART Packet transmit - expect ACK-Byte from BSL.
+* 1xx_2xx_4xx UART Packet transmit - expect ACK-Byte from BSL.
 *
-* Adds the 2xx UART specific header and footer bytes to a buffer, then sends and checks for a returning DATA_ACK
+* Adds the 1xx_2xx_4xx UART specific header and footer bytes to a buffer, then sends and checks for a returning DATA_ACK
 * 
 * \param buf an array of unsigned bytes to send
 * \param bufSize the number of bytes in the array
 *
 * \return 0 if success, or other value indicating and error
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize)
+uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize)
 {
 	uint16_t retValue = 0;
 	uint8_t rxBuf[1];
@@ -105,9 +105,9 @@ uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet_expectACK( uint8_t* buf, uint16_
 
 
 /***************************************************************************//**
-* 2xx UART Packet transmit.
+* 1xx_2xx_4xx UART Packet transmit.
 *
-* Adds the 2xx UART specific header and footer bytes to a buffer, then sends
+* Adds the 1xx_2xx_4xx UART specific header and footer bytes to a buffer, then sends
 * 
 * \param buf an array of unsigned bytes to send
 * \param bufSize the number of bytes in the array
@@ -115,7 +115,7 @@ uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet_expectACK( uint8_t* buf, uint16_
 *
 * \return 0 if success, or other value indicating and error
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet( uint8_t* buf, uint16_t bufSize )
+uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::TX_Packet( uint8_t* buf, uint16_t bufSize )
 {
 	uint16_t retValue = 0;
 	uint8_t rxBuf[1];
@@ -172,9 +172,9 @@ uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet( uint8_t* buf, uint16_t bufSize 
 
 
 /***************************************************************************//**
-* 2xx UART Packet receive.
+* 1xx_2xx_4xx UART Packet receive.
 *
-* removes and verifies the 2xx UART specific header and footer bytes from 
+* removes and verifies the 1xx_2xx_4xx UART specific header and footer bytes from 
 * the buffer.
 * 
 * \param buf an array of unsigned bytes to use as an RX buffer via UART
@@ -182,17 +182,17 @@ uint16_t MSPBSL_PacketHandler2xxUART::TX_Packet( uint8_t* buf, uint16_t bufSize 
 *
 * \return 0 if sucessful, or a value indicating the error
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler2xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize )
+uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize )
 {
 	uint16_t temp;
-	return MSPBSL_PacketHandler2xxUART::RX_Packet(buf, bufSize, &temp);
+	return MSPBSL_PacketHandler1xx_2xx_4xxUART::RX_Packet(buf, bufSize, &temp);
 
 }
 
 /***************************************************************************//**
-* 2xx UART Packet receive.
+* 1xx_2xx_4xx UART Packet receive.
 *
-* removes and verifies the 2xx UART specific header and footer bytes from 
+* removes and verifies the 1xx_2xx_4xx UART specific header and footer bytes from 
 * the buffer.
 * 
 * \param buf an array of unsigned bytes to use as an RX buffer via UART
@@ -201,7 +201,7 @@ uint16_t MSPBSL_PacketHandler2xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize )
 *
 * \return 0 if sucessful, or a value indicating the error
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler2xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize,  uint16_t* numBytesReceived )
+uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize,  uint16_t* numBytesReceived )
 {
 	uint16_t packetSize, rxedCRC, retValue;
 	uint8_t crcBuf[2];
@@ -264,13 +264,13 @@ uint16_t MSPBSL_PacketHandler2xxUART::RX_Packet(uint8_t* buf, uint16_t bufSize, 
 }
 
 /***************************************************************************//**
-* 2xx UART getMaxDataSize
+* 1xx_2xx_4xx UART getMaxDataSize
 *
 * returns the maximum amount of data that can be sent in a packet by this handler
 * 
 * \return the data size
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler2xxUART::getMaxDataSize()
+uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::getMaxDataSize()
 {
 	return (MAX_PACKET_SIZE - HANDLER_OVERHEAD);
 }
@@ -285,7 +285,7 @@ uint16_t MSPBSL_PacketHandler2xxUART::getMaxDataSize()
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_PacketHandler2xxUART::getErrorInformation( uint16_t err )
+string MSPBSL_PacketHandler1xx_2xx_4xxUART::getErrorInformation( uint16_t err )
 {
 	switch( err )
 	{

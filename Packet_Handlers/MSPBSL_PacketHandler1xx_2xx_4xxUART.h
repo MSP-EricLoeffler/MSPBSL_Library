@@ -1,5 +1,5 @@
 /*
- * MSPBSL_PacketHandler2xxUART
+ * MSPBSL_PacketHandler1xx_2xx_4xxUART
  *
  * A class file to corrrectly form packets for transmission via Serial UART
  *
@@ -72,13 +72,13 @@ using namespace std;
 #define DATA_ACK	0x90
 #define DATA_NAK	0xA0
 
-class MSPBSL_PacketHandler2xxUART : public MSPBSL_PacketHandler
+class MSPBSL_PacketHandler1xx_2xx_4xxUART : public MSPBSL_PacketHandler
 {
 public:
 
-	MSPBSL_PacketHandler2xxUART(string initString);
+	MSPBSL_PacketHandler1xx_2xx_4xxUART(string initString);
 
-	virtual ~MSPBSL_PacketHandler2xxUART(void);
+	virtual ~MSPBSL_PacketHandler1xx_2xx_4xxUART(void);
 	
 	uint16_t TX_Packet( uint8_t* buf, uint16_t bufSize );
 	uint16_t TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize );

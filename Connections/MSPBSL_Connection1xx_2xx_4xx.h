@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection 2xx
+ * MSPBSL_Connection 1xx_2xx_4xx
  *
- * A class file to impliment the high-level communication interface for 2xx BSL connections
+ * A class file to impliment the high-level communication interface for 1xx_2xx_4xx BSL connections
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -64,11 +64,11 @@
 #define DATA_ACK	0x90
 
 
-class MSPBSL_Connection2xx : public MSPBSL_Connection
+class MSPBSL_Connection1xx_2xx_4xx : public MSPBSL_Connection
 {
 public:
-	MSPBSL_Connection2xx(string initString);
-	virtual ~MSPBSL_Connection2xx(void);
+	MSPBSL_Connection1xx_2xx_4xx(string initString);
+	virtual ~MSPBSL_Connection1xx_2xx_4xx(void);
 	
 
 	virtual uint16_t massErase(void);

@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection 2xx
+ * MSPBSL_Connection 1xx_2xx_4xx
  *
- * A class file to impliment the high-level communication interface for 2xx BSL connections
+ * A class file to impliment the high-level communication interface for 1xx_2xx_4xx BSL connections
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -35,47 +35,47 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
-#include "MSPBSL_Connection2xx.h"
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
 
 
 //string BUG_DESIGNATOR = "BUG:";
 //string bugList = "";
 
 /***************************************************************************//**
-* MSPBSL_Connection2xx Class Constructor.
+* MSPBSL_Connection1xx_2xx_4xx Class Constructor.
 *
-* Creates a 2xx General Connection using the supplied parameters
+* Creates a 1xx_2xx_4xx General Connection using the supplied parameters
 *
 * \param initString an initialization string for the connection
 *        
 * \return a MSPBSL_Connection1/2/4xx class
 ******************************************************************************/
-MSPBSL_Connection2xx::MSPBSL_Connection2xx(string initString)
+MSPBSL_Connection1xx_2xx_4xx::MSPBSL_Connection1xx_2xx_4xx(string initString)
 {
-	string BUG_DESIGNATOR_2xx = "BUG:";
-    string bugList_2xx = "";
+	string BUG_DESIGNATOR_1xx_2xx_4xx = "BUG:";
+    string bugList_1xx_2xx_4xx = "";
 	// currently no bugs
-	if( initString.find(BUG_DESIGNATOR_2xx) != string::npos)
+	if( initString.find(BUG_DESIGNATOR_1xx_2xx_4xx) != string::npos)
 	{
-		int bugStart = initString.find(BUG_DESIGNATOR_2xx)+BUG_DESIGNATOR_2xx.size();
+		int bugStart = initString.find(BUG_DESIGNATOR_1xx_2xx_4xx)+BUG_DESIGNATOR_1xx_2xx_4xx.size();
 		int bugEnd = initString.find(' ',  bugStart );
-		bugList_2xx.append(initString.substr( bugStart, bugEnd-bugStart));
+		bugList_1xx_2xx_4xx.append(initString.substr( bugStart, bugEnd-bugStart));
 	}// found buglist
 
 }
 
 /***************************************************************************//**
-* MSPBSL_Connection2xx Class Destructor.
+* MSPBSL_Connection1xx_2xx_4xx Class Destructor.
 *
 ******************************************************************************/
-MSPBSL_Connection2xx::~MSPBSL_Connection2xx(void)
+MSPBSL_Connection1xx_2xx_4xx::~MSPBSL_Connection1xx_2xx_4xx(void)
 {
 }
 
 /***************************************************************************//**
-* The 2xx Standard Set PC Command
+* The 1xx_2xx_4xx Standard Set PC Command
 *
-* Creates a databuffer containing a standard 2xx Set PC Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Set PC Command, and passes 
 * this on to the Packet Handler layer for sending
 *
 * \param addr a 16-bit address where the device should begin to execute
@@ -84,7 +84,7 @@ MSPBSL_Connection2xx::~MSPBSL_Connection2xx(void)
 *         means the caller knows if the packet was sucessfully sent to the BSL, 
 *         not whether the desired address is executing correctly
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::setPC(uint32_t addr16)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::setPC(uint32_t addr16)
 {
 	uint16_t addr = addr16 & 0xFFFF;	
 	uint8_t command[7];
@@ -101,16 +101,16 @@ uint16_t MSPBSL_Connection2xx::setPC(uint32_t addr16)
 
 
 /***************************************************************************//**
-* The 2xx Standard Erase Segment Command
+* The 1xx_2xx_4xx Standard Erase Segment Command
 *
-* Creates a databuffer containing a standard 2xx Erase Segment Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Erase Segment Command, and passes 
 * this on to the Packet Handler layer for sending
 *
 * \param addr a 16-bit address which is in the desired segment to erase
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::eraseSegment(uint16_t addr)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseSegment(uint16_t addr)
 {
   uint8_t command[7];
   command[0]=ERASE_SEGMENT_COMMAND;
@@ -125,9 +125,9 @@ uint16_t MSPBSL_Connection2xx::eraseSegment(uint16_t addr)
 }
 
 /***************************************************************************//**
-* The 2xx Standard RX Data Block Command
+* The 1xx_2xx_4xx Standard RX Data Block Command
 *
-* Creates a databuffer containing a standard 2xx RX Data Block Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Data Block Command, and passes 
 * this on to the Packet Handler layer for sending.  Note: This command tells the BSL
 * to Receive a data block, so it will send data from the Host
 *
@@ -137,7 +137,7 @@ uint16_t MSPBSL_Connection2xx::eraseSegment(uint16_t addr)
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::RX_DataBlock(uint8_t* data, uint32_t startAddr16, uint32_t numBytes)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(uint8_t* data, uint32_t startAddr16, uint32_t numBytes)
 {
 	uint16_t startAddr = startAddr16 & 0xFFFF;
     uint16_t retValue = ACK;
@@ -187,7 +187,7 @@ uint16_t MSPBSL_Connection2xx::RX_DataBlock(uint8_t* data, uint32_t startAddr16,
 }
 
 /***************************************************************************//**
-* The 2xx Standard TX Data Block Command
+* The 1xx_2xx_4xx Standard TX Data Block Command
 *
 * Sends one or more TX Data Block Commands in order to write all data in the
 * supplied array down to memory as requested
@@ -198,7 +198,7 @@ uint16_t MSPBSL_Connection2xx::RX_DataBlock(uint8_t* data, uint32_t startAddr16,
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::TX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes)
 {
   // to do: handle "large" streaming data blocks being TXed
 
@@ -264,16 +264,16 @@ uint16_t MSPBSL_Connection2xx::TX_DataBlock( uint8_t* data, uint32_t startAddr16
 
 
 /***************************************************************************//**
-* The 2xx Standard TX BSL Version Command
+* The 1xx_2xx_4xx Standard TX BSL Version Command
 *
-* Creates a databuffer containing a standard 2xx TX BSL Version Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx TX BSL Version Command, and passes 
 * this on to the Packet Handler layer for sending.
 *
 * \param versionString a reference to a string which will store the returned version
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::TX_BSL_Version(string& versionString)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_BSL_Version(string& versionString)
 {
 
   uint16_t retValue = ACK;
@@ -311,15 +311,15 @@ uint16_t MSPBSL_Connection2xx::TX_BSL_Version(string& versionString)
 }
 
 /***************************************************************************//**
-* The 2xx Default RX Password Command
+* The 1xx_2xx_4xx Default RX Password Command
 *
-* Creates a databuffer containing a standard 2xx RX Password Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Password Command, and passes 
 * this on to the Packet Handler layer for sending.  Note: This command accepts 
 * no parameters as it sends a default (32x 0xFF) password
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::RX_Password(void)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_Password(void)
 {
 	uint8_t standardPassword[] = {	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 									0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
@@ -330,16 +330,16 @@ uint16_t MSPBSL_Connection2xx::RX_Password(void)
 }
 
 /***************************************************************************//**
-* The 2xx Standard RX Password Command
+* The 1xx_2xx_4xx Standard RX Password Command
 *
-* Creates a databuffer containing a standard 2xx RX Password Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx RX Password Command, and passes 
 * this on to the Packet Handler layer for sending.
 *
 * \param pass a databuffer containing the device password
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::RX_Password(uint8_t* password)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_Password(uint8_t* password)
 {
 	uint8_t passwordPacket[39];
 	uint16_t retValue = 0;
@@ -369,14 +369,14 @@ uint16_t MSPBSL_Connection2xx::RX_Password(uint8_t* password)
 }
 
 /***************************************************************************//**
-* The 2xx Standard Mass Erase Command
+* The 1xx_2xx_4xx Standard Mass Erase Command
 *
-* Creates a databuffer containing a standard 2xx Mass Erase Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Mass Erase Command, and passes 
 * this on to the Packet Handler layer for sending.
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection2xx::massErase(void)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::massErase(void)
 {
   uint8_t massEraseCommand[7];
   uint16_t retValue = 0;
@@ -399,9 +399,9 @@ uint16_t MSPBSL_Connection2xx::massErase(void)
 }
 
 /***************************************************************************//**
-* The 2xx Standard Erase Check Command
+* The 1xx_2xx_4xx Standard Erase Check Command
 *
-* Creates a databuffer containing a standard 2xx Erase Check Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Erase Check Command, and passes 
 * this on to the Packet Handler layer for sending.
 *  
 * \param startAddr the start address of the device memory to be checked 
@@ -410,7 +410,7 @@ uint16_t MSPBSL_Connection2xx::massErase(void)
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection2xx::eraseCheck( uint16_t startAddr, uint32_t numBytes )
+uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint16_t startAddr, uint32_t numBytes )
 {
   uint8_t InfoMainEraseCommand[7];
   uint16_t retValue = 0;
@@ -451,15 +451,15 @@ uint16_t MSPBSL_Connection2xx::eraseCheck( uint16_t startAddr, uint32_t numBytes
 }
 
 /***************************************************************************//**
-* The 2xx Standard Info/Main Erase Command
+* The 1xx_2xx_4xx Standard Info/Main Erase Command
 *
-* Creates a databuffer containing a standard 2xx Info/Main Erase Command, and passes 
+* Creates a databuffer containing a standard 1xx_2xx_4xx Info/Main Erase Command, and passes 
 * this on to the Packet Handler layer for sending.
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection2xx::InfoMainErase(uint16_t startAddr)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::InfoMainErase(uint16_t startAddr)
 {
   uint8_t InfoMainEraseCommand[7];
   uint16_t retValue = 0;
@@ -489,7 +489,7 @@ uint16_t MSPBSL_Connection2xx::InfoMainErase(uint16_t startAddr)
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_Connection2xx::getErrorInformation( uint16_t err )
+string MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( uint16_t err )
 {
 	return MSPBSL_Connection::getErrorInformation( err );
 }
