@@ -114,4 +114,4 @@ string MSPBSL_PacketHandler::getErrorInformation( uint16_t err )
 * being executed though it's not a member function of the used PacketHandler
 * subclass.
 ******************************************************************************/
-uint16_t MSPBSL_PacketHandler::TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize ){return 0xFFFF;};
+//uint16_t MSPBSL_PacketHandler::TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize ){return 0xFFFF;};

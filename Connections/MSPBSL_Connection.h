@@ -84,7 +84,7 @@ public:
 
 	virtual string getErrorInformation( uint16_t err );
 
-	MSPBSL_PacketHandler* getPacketHandler();
-	void setPacketHandler(MSPBSL_PacketHandler* protocol);
+	virtual MSPBSL_PacketHandler* getPacketHandler();
+	virtual void setPacketHandler(MSPBSL_PacketHandler* protocol);
 
 };

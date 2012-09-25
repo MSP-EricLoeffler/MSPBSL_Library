@@ -73,6 +73,27 @@ MSPBSL_Connection1xx_2xx_4xx::~MSPBSL_Connection1xx_2xx_4xx(void)
 }
 
 /***************************************************************************//**
+* Gets the Packet Handler used for formatting packets
+*
+* \return a MSPBSL_PacketHandler1xx_2xx_4xx class
+******************************************************************************/
+MSPBSL_PacketHandler1xx_2xx_4xxUART* MSPBSL_Connection1xx_2xx_4xx::getPacketHandler()
+{
+	return thePacketHandler;
+}
+
+/***************************************************************************//**
+* Sets the Packet Handler used for formatting packets
+*
+* \param  a MSPBSL_PacketHandler1xx_2xx_4xx class reference to be used to format packets
+* 
+******************************************************************************/
+void MSPBSL_Connection1xx_2xx_4xx::setPacketHandler(MSPBSL_PacketHandler1xx_2xx_4xxUART* handler)
+{
+	thePacketHandler = handler;
+}
+
+/***************************************************************************//**
 * The 1xx_2xx_4xx Standard Set PC Command
 *
 * Creates a databuffer containing a standard 1xx_2xx_4xx Set PC Command, and passes 
