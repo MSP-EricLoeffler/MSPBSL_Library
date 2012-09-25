@@ -218,11 +218,6 @@ void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL(uint16_t method)
 	
 	boost::this_thread::sleep(boost::posix_time::milliseconds(250)); 
 
-	//TODO: FLUSH UART BUFFER HERE!!
-	//depending on the hardware, everytime the BSL gets invoked, a 0x00 is sent by the BSL, and gets stuck in the buffer.
-	//uint8_t debugbuf[1];					//ugly workaround! - Depends on the PC hardware! Flush buffer!
-	//read( *port, buffer( debugbuf, 1) );
-
 }
 
 /***************************************************************************//**

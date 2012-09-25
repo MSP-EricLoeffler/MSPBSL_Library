@@ -70,8 +70,6 @@ public:
 	virtual ~MSPBSL_PacketHandler();
 
 	virtual uint16_t TX_Packet( uint8_t* buf, uint16_t bufSize ) = 0;
-	
-	//virtual uint16_t TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize );
 
     virtual uint16_t RX_Packet( uint8_t* buf, uint16_t bufSize,  uint16_t* numBytesReceived ) = 0;
     virtual uint16_t RX_Packet( uint8_t* buf, uint16_t bufSize ) = 0;
