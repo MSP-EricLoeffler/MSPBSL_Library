@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection
+ * MSPBSL_Connection_v1_3x
  *
- * An interface to define basic BSL functionality across all families
+ * A subclass to add bugfixes and enhance functionality
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,35 +36,59 @@
  *
 */
 
-#include "MSPBSL_Connection.h"
+#include "MSPBSL_Connection_v1_3x.h"
+
 
 /***************************************************************************//**
-* MSPBSL_Connection Class Destructor.
-*
+* MSPBSL_Connection_v1_3x Constructor.
+*        
+* \return a MSPBSL_Connection_v1_3x class
 ******************************************************************************/
-MSPBSL_Connection::~MSPBSL_Connection()
+MSPBSL_Connection_v1_3x::MSPBSL_Connection_v1_3x(string initString) : MSPBSL_Connection_v1_4x( initString)
 {
 }
 
 /***************************************************************************//**
-* Gets the Packet Handler used for formatting packets
-*
-* \return a MSPBSL_PacketHandler class
+* MSPBSL_Connection_v1_3x Destructor.
+*        
 ******************************************************************************/
-MSPBSL_PacketHandler* MSPBSL_Connection::getPacketHandler()
+MSPBSL_Connection_v1_3x::~MSPBSL_Connection_v1_3x(void)
 {
-	return thePacketHandler;
 }
 
 /***************************************************************************//**
-* Sets the Packet Handler used for formatting packets
+* Modified RX Data Block Command
 *
-* \param  a MSPBSL_PacketHandler class reference to be used to format packets
-* 
+* Creates a databuffer containing a standard 2xx RX Data Block Command, passes 
+* this on to the Packet Handler layer for sending, then reads back and verifies the data.  
+* Note: This command tells the BSL to Receive a data block, so it will send 
+* data from the Host.
+*
+* \param data an array of unsigned bytes to send
+* \param startAddr the start address in device memory to begin writing these bytes
+* \param numBytes the number of bytes in the array
+*        
+* \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-void MSPBSL_Connection::setPacketHandler(MSPBSL_PacketHandler* handler)
+
+uint16_t MSPBSL_Connection_v1_3x::RX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes )
 {
-	thePacketHandler = handler;
+	uint16_t retvalue = 0;
+	uint8_t* retbuf = new uint8_t[numBytes];
+
+	retvalue = MSPBSL_Connection2xx::RX_DataBlock(data, startAddr16, numBytes );
+	retvalue |= MSPBSL_Connection2xx::TX_DataBlock(retbuf, startAddr16, numBytes );
+
+	for(uint32_t i=0 ; i<numBytes ; i++ )
+	{
+		if(data[i] != retbuf[i]){
+			delete [] retbuf;
+			return(DATA_VERIFICATION_ERROR);
+		}
+	}
+		
+	delete [] retbuf;
+	return(retvalue);
 }
 
 /***************************************************************************//**
@@ -77,18 +101,7 @@ void MSPBSL_Connection::setPacketHandler(MSPBSL_PacketHandler* handler)
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_Connection::getErrorInformation( uint16_t err )
+string MSPBSL_Connection_v1_3x::getErrorInformation( uint16_t err )
 {
-	
-	switch( err )
-	{
-	case (GENERAL_BSL_CONNECTION_ERROR):
-		return "General Connection Error Occured";
-		break;
-	case (UNEXPECTED_VALUE):
-		return "an unexpected value was received by the BSL connection";
-		break;
-	}
-	return thePacketHandler->getErrorInformation( err );
+	return MSPBSL_Connection2xx::getErrorInformation( err );
 }
-

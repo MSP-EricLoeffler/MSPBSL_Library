@@ -38,7 +38,7 @@
 #include "MSPBSL_Connection5xx.h"
 
 
-string BUG_DESIGNATOR = "BUG:";
+string BUG_DESIGNATOR = "BUG:";  
 string bugList = "";
 
 /***************************************************************************//**

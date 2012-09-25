@@ -1,7 +1,7 @@
 /*
- * MSPBSL_CRCEngine
+ *  * MSPBSL_Connection_v1_10
  *
- * A class file to encapsulate the computation of CRCs on the PC side
+ * A subclass to add bugfixes and enhance functionality of the v1.10 BSL
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,34 +36,36 @@
  *
 */
 
+
+
+
 #pragma once
 #include <string>
-#include <boost/asio.hpp> // include boost
-#include <boost/cstdint.hpp>
-#include "MSPBSL_PhysicalInterfaceSerialUART.h"
+#include "MSPBSL_Connection2xx.h"
+#define YES 0x01
+#define NO  0x00
 
-using namespace std;
-
-class MSPBSL_CRCEngine
+class MSPBSL_Connection_v1_10 : public MSPBSL_Connection2xx
 {
+private:
+	uint8_t patch_loaded;
+	uint8_t passwordbuffer[32];
 public:
 
-	MSPBSL_CRCEngine(string initString);
+	MSPBSL_Connection_v1_10(string initString);
+	virtual ~MSPBSL_Connection_v1_10(void);
 
-	~MSPBSL_CRCEngine(void);
+	virtual uint16_t TX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes );
+	virtual uint16_t RX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes );  
+	virtual uint16_t RX_Password( uint8_t* password );
+	virtual uint16_t RX_Password(void);
+	virtual uint16_t massErase(void);
+	virtual uint16_t TX_BSL_Version(string& versionString);
+	virtual uint16_t eraseCheck( uint16_t startAddr, uint32_t numBytes );
+	//virtual uint16_t InfoMainErase(uint16_t addr);  //Workaround possible, but not able to reproduce bug
 
-	void initEngine(uint16_t seed);
+	virtual string getErrorInformation( uint16_t err );
 
-	void initEngine();
-
-	void addByte(uint8_t byte);
-	
-	void addBytes(uint8_t* byte, uint16_t numBytes);
-
-	uint16_t getLowByte();
-
-	uint16_t getHighByte();
-
-	uint16_t verify( uint8_t* buf, uint16_t numBytes, uint16_t crc );
+	uint16_t load_patch(void);
 };
 

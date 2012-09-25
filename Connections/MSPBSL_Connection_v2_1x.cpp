@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection
+ * MSPBSL_Connection_v2_1x
  *
- * An interface to define basic BSL functionality across all families
+ * A subclass to add bugfixes and enhance functionality
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,35 +36,61 @@
  *
 */
 
-#include "MSPBSL_Connection.h"
+#include "MSPBSL_Connection_v2_1x.h"
+
 
 /***************************************************************************//**
-* MSPBSL_Connection Class Destructor.
-*
+* MSPBSL_Connection_v2_1x Constructor.
+*        
+* \return a MSPBSL_Connection_v2_1x class
 ******************************************************************************/
-MSPBSL_Connection::~MSPBSL_Connection()
+MSPBSL_Connection_v2_1x::MSPBSL_Connection_v2_1x(string initString) : MSPBSL_Connection_v2_xx( initString)
 {
 }
 
 /***************************************************************************//**
-* Gets the Packet Handler used for formatting packets
-*
-* \return a MSPBSL_PacketHandler class
+* MSPBSL_Connection_v2_1x Destructor.
+*        
 ******************************************************************************/
-MSPBSL_PacketHandler* MSPBSL_Connection::getPacketHandler()
+MSPBSL_Connection_v2_1x::~MSPBSL_Connection_v2_1x(void)
 {
-	return thePacketHandler;
 }
 
+
+
 /***************************************************************************//**
-* Sets the Packet Handler used for formatting packets
+* The 2xx Set Memory Offset Command
 *
-* \param  a MSPBSL_PacketHandler class reference to be used to format packets
-* 
+* Creates a databuffer containing a standard 2xx Set Memory Offset Command, and passes 
+* this on to the Packet Handler layer for sending.
+*
+* Note: This Command is implemented in BSL versions 2.1x and above only.
+*  
+* \param OffsetValue the Value for the Memory offset 
+*
+* \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-void MSPBSL_Connection::setPacketHandler(MSPBSL_PacketHandler* handler)
+
+uint16_t MSPBSL_Connection_v2_1x::SetMemOffset(uint16_t OffsetValue)
 {
-	thePacketHandler = handler;
+  uint8_t SetMemOffsetCommand[7];
+  uint16_t retValue = 0;
+  SetMemOffsetCommand[0] = SET_MEM_OFFSET_COMMAND;
+  SetMemOffsetCommand[1] = 0x04;
+  SetMemOffsetCommand[2] = 0x04;
+  SetMemOffsetCommand[3] = 0x00;					// AL
+  SetMemOffsetCommand[4] = 0x00;	 				// AH
+  SetMemOffsetCommand[5] = ((OffsetValue)&0xFF);
+  SetMemOffsetCommand[6] = ((OffsetValue>>8)&0xFF);
+
+   retValue |= thePacketHandler->TX_Packet_expectACK(SetMemOffsetCommand, 7);
+
+	if( retValue != ACK )
+	{
+		return retValue;
+	}
+
+	return retValue;
 }
 
 /***************************************************************************//**
@@ -77,18 +103,7 @@ void MSPBSL_Connection::setPacketHandler(MSPBSL_PacketHandler* handler)
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_Connection::getErrorInformation( uint16_t err )
+string MSPBSL_Connection_v2_1x::getErrorInformation( uint16_t err )
 {
-	
-	switch( err )
-	{
-	case (GENERAL_BSL_CONNECTION_ERROR):
-		return "General Connection Error Occured";
-		break;
-	case (UNEXPECTED_VALUE):
-		return "an unexpected value was received by the BSL connection";
-		break;
-	}
-	return thePacketHandler->getErrorInformation( err );
+	return MSPBSL_Connection2xx::getErrorInformation( err );
 }
-

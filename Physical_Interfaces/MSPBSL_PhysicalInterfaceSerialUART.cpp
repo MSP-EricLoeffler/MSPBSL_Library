@@ -44,8 +44,7 @@ string BAUD_DESIGNATOR = "BAUD:";
 string PARITY_DESIGNATOR = "PARITY:";
 string INVOKE_DESIGNATOR = "INVOKE:";
 
-#define STANDARD_INVOKE   0x01
-#define BSL_XXXX_INVOKE   0x02
+
 int invokeMethod = STANDARD_INVOKE;
 int baudRate;
 
@@ -119,15 +118,23 @@ MSPBSL_PhysicalInterfaceSerialUART::MSPBSL_PhysicalInterfaceSerialUART(string in
 		uint16_t invokeStart = initString.find(INVOKE_DESIGNATOR)+INVOKE_DESIGNATOR.size();
 		uint16_t invokeEnd = initString.find(' ',  invokeStart );
 		string sub = initString.substr( invokeStart, invokeEnd-invokeStart);
-		invokeMethod = atoi(sub.c_str());;
+		//invokeMethod = atoi(sub.c_str());
+
+		invokeMethod = 0x01;	//STANDART_INVOKE
+		if (sub.compare("2")==0) 		
+		{
+			invokeMethod = 0x02;
+		}
+
 	}
 
 
-	//TODO: Catch exception forunknown ports
+	//TODO: Catch exception for unknown ports
 	io_service io;
     port = new serial_port( io, PORT );
 	port->set_option( serial_port_base::character_size( 8 ) );
 	port->set_option( serial_port_base::flow_control( serial_port_base::flow_control::none ) );
+	port->set_option( serial_port_base::stop_bits( serial_port_base::stop_bits::one ) );
 	
 	physicalInterfaceCommand( Baud );   // set Baud Rate
 
@@ -175,7 +182,7 @@ void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL()
 /***************************************************************************//**
 * BSL invoke method.
 *
-* Causes the BSL to be invoked, using the mrthod given in the parameter
+* Causes the BSL to be invoked, using the method given in the parameter
 *
 * \param method an integer describing the invoke method to use:
 *        1 The 'classic' BSL invoke for 1/2/4/5/6xx devices
@@ -185,6 +192,8 @@ void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL()
 void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL(uint16_t method)
 {
     
+	port->set_option(RESETControl(HIGH_SIGNAL));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(300)); 
 	port->set_option(RESETControl(LOW_SIGNAL));
 	port->set_option(TESTControl(LOW_SIGNAL));
 	boost::this_thread::sleep(boost::posix_time::milliseconds(10)); 
@@ -208,7 +217,12 @@ void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL(uint16_t method)
 	}
 	
 	boost::this_thread::sleep(boost::posix_time::milliseconds(250)); 
-	
+
+	//TODO: FLUSH UART BUFFER HERE!!
+	//depending on the hardware, everytime the BSL gets invoked, a 0x00 is sent by the BSL, and gets stuck in the buffer.
+	//uint8_t debugbuf[1];					//ugly workaround! - Depends on the PC hardware! Flush buffer!
+	//read( *port, buffer( debugbuf, 1) );
+
 }
 
 /***************************************************************************//**
@@ -252,6 +266,8 @@ uint16_t MSPBSL_PhysicalInterfaceSerialUART::RX_Bytes( uint8_t* buf, uint16_t nu
 	//b.resize(numBytes);
 	
 	read( *port, buffer( buf, numBytes) );
+
+	//TODO
 	// To do: error checking later (timeout?)
 	//if( (read( *port, buffer( buf, numBytes) )) != 0)	
 	//{

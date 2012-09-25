@@ -1,7 +1,7 @@
 /*
- * MSPBSL_CRCEngine
+ * MSPBSL_Connection_v2_1x
  *
- * A class file to encapsulate the computation of CRCs on the PC side
+ * A subclass to add bugfixes and enhance functionality
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,34 +36,25 @@
  *
 */
 
+
+
+
 #pragma once
 #include <string>
-#include <boost/asio.hpp> // include boost
-#include <boost/cstdint.hpp>
-#include "MSPBSL_PhysicalInterfaceSerialUART.h"
+#include "MSPBSL_Connection2xx.h"
+#include "MSPBSL_Connection_v2_xx.h"
 
-using namespace std;
-
-class MSPBSL_CRCEngine
+class MSPBSL_Connection_v2_1x : public MSPBSL_Connection_v2_xx
 {
 public:
 
-	MSPBSL_CRCEngine(string initString);
+	MSPBSL_Connection_v2_1x(string initString);
+	virtual ~MSPBSL_Connection_v2_1x(void);
 
-	~MSPBSL_CRCEngine(void);
 
-	void initEngine(uint16_t seed);
 
-	void initEngine();
+	virtual string getErrorInformation( uint16_t err );
 
-	void addByte(uint8_t byte);
-	
-	void addBytes(uint8_t* byte, uint16_t numBytes);
+	uint16_t SetMemOffset(uint16_t OffsetValue); //implemented only in BSL versions 2.1x and above 
 
-	uint16_t getLowByte();
-
-	uint16_t getHighByte();
-
-	uint16_t verify( uint8_t* buf, uint16_t numBytes, uint16_t crc );
 };
-
