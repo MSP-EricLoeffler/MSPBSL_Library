@@ -97,12 +97,12 @@ public:
 	//uint8_t TX_TXT_File(file)
 	//uint8_t RX_TXT_File(file)
 
-	MSPBSL_PacketHandler1xx_2xx_4xxUART* getPacketHandler();
-	void setPacketHandler(MSPBSL_PacketHandler1xx_2xx_4xxUART* protocol);
+	//MSPBSL_PacketHandler1xx_2xx_4xxUART* getPacketHandler();
+	void setPacketHandler(MSPBSL_PacketHandler* protocol);
 
 protected:
 	string bugList;
-	MSPBSL_PacketHandler1xx_2xx_4xxUART* thePacketHandler;
+	MSPBSL_PacketHandler1xx_2xx_4xxUART* thePacketHandler1xx_2xx_4xx;
 	//uint16_t sendPacketExpectNothing(uint8_t* packet, uint16_t packetSize);
 	//uint16_t sendPacketExpectMessage(uint8_t* packet, uint16_t packetSize);
 

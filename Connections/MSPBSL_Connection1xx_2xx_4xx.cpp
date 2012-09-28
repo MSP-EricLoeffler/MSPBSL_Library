@@ -51,6 +51,7 @@
 * \return a MSPBSL_Connection1/2/4xx class
 ******************************************************************************/
 MSPBSL_Connection1xx_2xx_4xx::MSPBSL_Connection1xx_2xx_4xx(string initString)
+	: thePacketHandler1xx_2xx_4xx(0)
 {
 	string BUG_DESIGNATOR_1xx_2xx_4xx = "BUG:";
     string bugList_1xx_2xx_4xx = "";
@@ -77,10 +78,10 @@ MSPBSL_Connection1xx_2xx_4xx::~MSPBSL_Connection1xx_2xx_4xx(void)
 *
 * \return a MSPBSL_PacketHandler1xx_2xx_4xx class
 ******************************************************************************/
-MSPBSL_PacketHandler1xx_2xx_4xxUART* MSPBSL_Connection1xx_2xx_4xx::getPacketHandler()
+/*MSPBSL_PacketHandler1xx_2xx_4xxUART* MSPBSL_Connection1xx_2xx_4xx::getPacketHandler()
 {
 	return thePacketHandler;
-}
+}/
 
 /***************************************************************************//**
 * Sets the Packet Handler used for formatting packets
@@ -88,9 +89,10 @@ MSPBSL_PacketHandler1xx_2xx_4xxUART* MSPBSL_Connection1xx_2xx_4xx::getPacketHand
 * \param  a MSPBSL_PacketHandler1xx_2xx_4xx class reference to be used to format packets
 * 
 ******************************************************************************/
-void MSPBSL_Connection1xx_2xx_4xx::setPacketHandler(MSPBSL_PacketHandler1xx_2xx_4xxUART* handler)
+void MSPBSL_Connection1xx_2xx_4xx::setPacketHandler(MSPBSL_PacketHandler* handler)
 {
-	thePacketHandler = handler;
+	MSPBSL_Connection::setPacketHandler(handler);
+	thePacketHandler1xx_2xx_4xx = dynamic_cast<MSPBSL_PacketHandler1xx_2xx_4xxUART*>(handler);
 }
 
 /***************************************************************************//**
@@ -117,7 +119,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::setPC(uint32_t addr16)
 	command[5]=0x00;						// LL
 	command[6]=0x00;						// LH
  
-  return thePacketHandler->TX_Packet_expectACK(command, 7);
+  return thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(command, 7);
 }
 
 
@@ -142,7 +144,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseSegment(uint16_t addr)
   command[5]=0x02;               // LL
   command[6]=0xA5;               // LH
   
-  return thePacketHandler->TX_Packet_expectACK(command, 7);
+  return thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(command, 7);
 }
 
 /***************************************************************************//**
@@ -166,7 +168,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(uint8_t* data, uint32_t star
 	uint16_t currentPacketNumBytes;
 	uint16_t numBytesRemaining = numBytes;
 	uint16_t currentBytePointer = 0;
-	uint16_t maxPacketSize = (thePacketHandler->getMaxDataSize())-7;
+	uint16_t maxPacketSize = (thePacketHandler1xx_2xx_4xx->getMaxDataSize())-7;
 	while( numBytesRemaining > 0)
 	{
 		if( numBytesRemaining > maxPacketSize )
@@ -193,7 +195,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(uint8_t* data, uint32_t star
 			txDataBuf[i+7] = data[currentBytePointer];
 
 		}
-		retValue = thePacketHandler->TX_Packet_expectACK(txDataBuf, currentPacketNumBytes+7);
+		retValue = thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(txDataBuf, currentPacketNumBytes+7);
 		delete [] txDataBuf;
 		currentStartAddr += currentPacketNumBytes;
 		numBytesRemaining -= currentPacketNumBytes;
@@ -225,7 +227,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock( uint8_t* data, uint32_t sta
 
   uint16_t startAddr = startAddr16 & 0xFFFF;
   uint16_t retValue = ACK;
-  uint16_t maxPacketSize = thePacketHandler->getMaxDataSize();
+  uint16_t maxPacketSize = thePacketHandler1xx_2xx_4xx->getMaxDataSize();
   uint32_t maxBytesRXed = maxPacketSize-3;          // the packet size minus data header = max data
   uint32_t totalBytesRXed = 0;
   uint32_t bytesRequested;
@@ -256,13 +258,13 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock( uint8_t* data, uint32_t sta
 	  command[5]=bytesRequested;						// LL
 	  command[6]=0x00;									// LH
 
-	  retValue |= thePacketHandler->TX_Packet(command, 7);
+	  retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet(command, 7);
 	  if( retValue != ACK )
 	  {
 		  return retValue;
 	  }
 
-	  retValue |= thePacketHandler->RX_Packet(rxDataBuf, maxBytesRXed, &bytesReceived);
+	  retValue |= thePacketHandler1xx_2xx_4xx->RX_Packet(rxDataBuf, maxBytesRXed, &bytesReceived);
 	  if( retValue != ACK )
 	  {
 		  return retValue;
@@ -310,14 +312,14 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_BSL_Version(string& versionString)
   commandPacket[5] = 0x00;
   commandPacket[6] = 0x00;
 
-	retValue = thePacketHandler->TX_Packet(commandPacket, 7);
+	retValue = thePacketHandler1xx_2xx_4xx->TX_Packet(commandPacket, 7);
   
 	if( retValue != ACK )
 	{
 		return retValue;
 	}
 
-	retValue = thePacketHandler->RX_Packet(rxedDataPacket, 16);
+	retValue = thePacketHandler1xx_2xx_4xx->RX_Packet(rxedDataPacket, 16);
 	if( retValue != ACK )
 	{
 		return retValue;
@@ -378,7 +380,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_Password(uint8_t* password)
 		passwordPacket[i+7] = password[i];
 	}
 	
-    retValue |= thePacketHandler->TX_Packet_expectACK(passwordPacket, 39);
+    retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(passwordPacket, 39);
 
 	if( retValue != ACK )
 	{
@@ -409,7 +411,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::massErase(void)
   massEraseCommand[5] = 0x06;
   massEraseCommand[6] = 0xA5;
 
-   retValue |= thePacketHandler->TX_Packet_expectACK(massEraseCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(massEraseCommand, 7);
 
 	if( retValue != ACK )
 	{
@@ -457,7 +459,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint16_t startAddr, uint32_t 
 	  InfoMainEraseCommand[5] = ((numBytes)&0xFF);					// LL
 	  InfoMainEraseCommand[6] = ((numBytes>>8)&0xFF);				// LH
 
-	  retValue |= thePacketHandler->TX_Packet_expectACK(InfoMainEraseCommand, 7);
+	  retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(InfoMainEraseCommand, 7);
 	  
 	  startAddr += numBytes;
 
@@ -492,7 +494,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::InfoMainErase(uint16_t startAddr)
   InfoMainEraseCommand[5] = 0x04;
   InfoMainEraseCommand[6] = 0xA5;
 
-   retValue |= thePacketHandler->TX_Packet_expectACK(InfoMainEraseCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(InfoMainEraseCommand, 7);
 
 	return retValue;
 }

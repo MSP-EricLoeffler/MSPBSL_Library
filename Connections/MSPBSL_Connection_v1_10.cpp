@@ -87,7 +87,7 @@ uint16_t MSPBSL_Connection_v1_10::TX_DataBlock( uint8_t* data, uint32_t startAdd
 
 
   uint16_t startAddr = startAddr16 & 0xFFFF;
-  uint16_t maxPacketSize = thePacketHandler->getMaxDataSize();
+  uint16_t maxPacketSize = thePacketHandler1xx_2xx_4xx->getMaxDataSize();
   uint32_t maxBytesRXed = maxPacketSize-3;          // the packet size minus data header = max data
   uint32_t totalBytesRXed = 0;
   uint32_t bytesRequested;
@@ -120,13 +120,13 @@ uint16_t MSPBSL_Connection_v1_10::TX_DataBlock( uint8_t* data, uint32_t startAdd
 
 	  retValue |= setPC(0x0220); //start adress of patch
 
-	  retValue |= thePacketHandler->TX_Packet(command, 7);
+	  retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet(command, 7);
 	  if( retValue != ACK )
 	  {
 		  return retValue;
 	  }
 
-	  retValue |= thePacketHandler->RX_Packet(rxDataBuf, maxBytesRXed, &bytesReceived);
+	  retValue |= thePacketHandler1xx_2xx_4xx->RX_Packet(rxDataBuf, maxBytesRXed, &bytesReceived);
 	  if( retValue != ACK )
 	  {
 		  return retValue;
@@ -185,7 +185,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_DataBlock( uint8_t* data, uint32_t startAdd
 	uint16_t currentPacketNumBytes;
 	uint16_t numBytesRemaining = numBytes;
 	uint16_t currentBytePointer = 0;
-	uint16_t maxPacketSize = (thePacketHandler->getMaxDataSize())-7;
+	uint16_t maxPacketSize = (thePacketHandler1xx_2xx_4xx->getMaxDataSize())-7;
 	while( numBytesRemaining > 0)
 	{
 		if( numBytesRemaining > maxPacketSize )
@@ -213,7 +213,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_DataBlock( uint8_t* data, uint32_t startAdd
 
 		}
 		retValue |= setPC(0x0220); //start adress of patch
-		retValue |= thePacketHandler->TX_Packet_expectACK(txDataBuf, currentPacketNumBytes+7);
+		retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(txDataBuf, currentPacketNumBytes+7);
 		delete[] txDataBuf;
 		currentStartAddr += currentPacketNumBytes;
 		numBytesRemaining -= currentPacketNumBytes;
@@ -386,7 +386,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_Password(uint8_t* password)
 		passwordbuffer[i] = password[i];
 	}
 	
-    retValue |= thePacketHandler->TX_Packet_expectACK(passwordPacket, 39);
+    retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(passwordPacket, 39);
 
 	if( retValue != ACK )
 	{

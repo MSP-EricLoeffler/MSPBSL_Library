@@ -83,7 +83,7 @@ uint16_t MSPBSL_Connection_v2_1x::SetMemOffset(uint16_t OffsetValue)
   SetMemOffsetCommand[5] = ((OffsetValue)&0xFF);
   SetMemOffsetCommand[6] = ((OffsetValue>>8)&0xFF);
 
-   retValue |= thePacketHandler->TX_Packet_expectACK(SetMemOffsetCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(SetMemOffsetCommand, 7);
 
 	if( retValue != ACK )
 	{

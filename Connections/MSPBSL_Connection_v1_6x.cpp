@@ -86,7 +86,7 @@ uint16_t MSPBSL_Connection_v1_6x::ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_
   ChangeBaudrateCommand[5] = D3;
   ChangeBaudrateCommand[6] = 0x00;
 
-   retValue |= thePacketHandler->TX_Packet_expectACK(ChangeBaudrateCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(ChangeBaudrateCommand, 7);
 
 	if( retValue != ACK )
 	{

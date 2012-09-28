@@ -77,8 +77,8 @@ MSPBSL_PacketHandler1xx_2xx_4xxUART::~MSPBSL_PacketHandler1xx_2xx_4xxUART(void)
 uint16_t MSPBSL_PacketHandler1xx_2xx_4xxUART::TX_Packet_expectACK( uint8_t* buf, uint16_t bufSize)
 {
 	uint16_t retValue = 0;
-	uint8_t rxBuf[1];
-	retValue = TX_Packet( buf, bufSize ); 
+	uint8_t rxBuf[1] = {0};
+	retValue = MSPBSL_PacketHandler1xx_2xx_4xxUART::TX_Packet( buf, bufSize ); 
 	if( retValue != ACK )
 	{
 		return retValue;

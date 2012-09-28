@@ -40,6 +40,8 @@
 #include <string>
 #include "MSPBSL_Connection.h"
 #include <boost/cstdint.hpp>
+#include <fstream>
+#include <streambuf>
 
 class MSPBSL_Factory
 {
