@@ -51,9 +51,9 @@ int baudRate;
 
 #ifdef _WIN32
 //  ->  \\.\com12  -> "\\\\.\\COM1"
-	char *PORT = "COM1";
+	const char *PORT = "COM1";
 #else
-    char *PORT = "dev/ttyS3";
+    const char *PORT = "dev/ttyS3";
 #endif
 
 /***************************************************************************//**
