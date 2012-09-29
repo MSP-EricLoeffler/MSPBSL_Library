@@ -63,11 +63,11 @@ class TESTControl
 private:
 	uint16_t state;
 public: 
-	TESTControl::TESTControl( uint16_t initState )
+	TESTControl( uint16_t initState )
 	{
 		state = initState;
 	}; // constructor
-	boost::system::error_code TESTControl::store( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error ) const
+	boost::system::error_code store( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error ) const
 	{
         #if defined( MSPBSL_ON_WIN )
 		if( state )
@@ -98,7 +98,7 @@ public:
 		return error;
 	}; // store
 	
-	boost::system::error_code TESTControl::load( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error)
+	boost::system::error_code load( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error)
 	{
         #if defined( MSPBSL_ON_WIN )
 		if (storage.fRtsControl == RTS_CONTROL_ENABLE)
@@ -136,7 +136,7 @@ public:
 	{
 		state = initState;
 	};  // constructor
-	boost::system::error_code RESETControl::store( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error ) const
+	boost::system::error_code store( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error ) const
 	{
         #if defined( MSPBSL_ON_WIN )
 		if( state )
@@ -168,7 +168,7 @@ public:
 		return error;
 	}; // store
 	
-	boost::system::error_code RESETControl::load( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error)
+	boost::system::error_code load( BOOST_ASIO_OPTION_STORAGE& storage, boost::system::error_code& error)
 	{
         #if defined( MSPBSL_ON_WIN )
 		if (storage.fDtrControl == DTR_CONTROL_ENABLE)
