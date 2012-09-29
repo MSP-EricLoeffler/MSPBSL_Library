@@ -78,7 +78,7 @@ public:
 		{	
 			storage.fRtsControl = RTS_CONTROL_ENABLE;
 		}
-        #else if defined ( MSPBSL_ON_LINUX )
+        #elif defined ( MSPBSL_ON_LINUX )
 		// linux currently untested
 		uint16_t flags;
 		ioctl(fd, TIOCMGET, &flags);
@@ -110,7 +110,7 @@ public:
 			state = 1;
 		}
 		
-        #else if defined ( MSPBSL_ON_LINUX )
+        #elif defined ( MSPBSL_ON_LINUX )
 		uint16_t flags;
 		ioctl(fd, TIOCMGET, &flags);
 		if( flags & TIOCM_RTS )
@@ -147,7 +147,7 @@ public:
 		{	
 			storage.fDtrControl = DTR_CONTROL_DISABLE;
 		}
-        #else if defined ( MSPBSL_ON_LINUX )
+        #elif defined ( MSPBSL_ON_LINUX )
 		// linux currently untested
 		uint16_t flags;
 		ioctl(fd, TIOCMGET, &flags);
@@ -180,7 +180,7 @@ public:
 			state = 0;
 		}
 		
-        #else if defined ( MSPBSL_ON_LINUX )
+        #elif defined ( MSPBSL_ON_LINUX )
 		uint16_t flags;
 		ioctl(fd, TIOCMGET, &flags);
 		if( flags & TIOCM_DTR )
