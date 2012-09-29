@@ -200,6 +200,7 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		p->setPhysicalInterface( s );
 		theBSLConnection->setPacketHandler(p);
 	} // all 5XX UART BSLs handled
+#ifdef MSPBSL_USB
 	else if (initString.find( USB_5XX_STRING ) !=string::npos)                  // if it's a 5xx USB....
 	{
 		theBSLConnection = new MSPBSL_Connection5xx( initString );
@@ -208,9 +209,7 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		p->setPhysicalInterface( s );
 		theBSLConnection->setPacketHandler(p);
 	}
-
-
-
+#endif
 	return theBSLConnection;
 }
 
