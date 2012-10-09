@@ -38,20 +38,36 @@
 
 #include "MSPBSL_Factory.h"
 
-//5xx includes
-// Connections
-#include "MSPBSL_ConnectionFRAMFamily.h"
-#include "MSPBSL_Connection5438Family.h"
-#include "MSPBSL_Connection5xxUSB.h"
-#include "MSPBSL_Connection5xx.h"
-// Packet Handlers
-#include "MSPBSL_PacketHandler5xxUART.h"
-#include "MSPBSL_PacketHandler5xxUSB.h"
 // Physical Connections Handlers
 #include "MSPBSL_PhysicalInterfaceSerialUART.h"
 #include "MSPBSL_PhysicalInterfaceUSB.h"
 
-// to do: eventuall put this in a txt file
+// Connections
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
+#include "MSPBSL_ConnectionFRAMFamily.h"
+#include "MSPBSL_Connection5438Family.h"
+#include "MSPBSL_Connection5xxUSB.h"
+#include "MSPBSL_Connection5xxUART.h"
+#include "MSPBSL_Connection5xx.h"
+#include "MSPBSL_Connection1xx_2xx_4xx.h"
+#include "MSPBSL_Connection_v1_10.h"
+#include "MSPBSL_Connection_v1_3x.h"
+#include "MSPBSL_Connection_v1_4x.h"
+#include "MSPBSL_Connection_v1_6x.h"
+#include "MSPBSL_Connection_v2_xx.h"
+#include "MSPBSL_Connection_v2_1x.h"
+// Packet Handlers
+#include "MSPBSL_PacketHandler5xxUART.h"
+#include "MSPBSL_PacketHandler5xxUSB.h"
+#include "MSPBSL_PacketHandler1xx_2xx_4xxUART.h"
+
+
+
+
+
+
+
+
 
 //Official List of acceptable inputs:
 //
@@ -65,85 +81,21 @@
 //BUG:
 //  SHORT_PASSWORD
 
-#define UART_5XX_STRING "UART_5XX "
-#define UART_FRAM_STRING "UART_FRAM "
-#define USB_5XX_STRING  "USB_5XX "
+#define UART_5XX_STRING "UART_5XX"
+#define UART_FRAM_STRING "UART_FRAM"
+#define USB_5XX_STRING  "USB_5XX"
+
+#define UART_1XX_2XX_4XX_STRING "UART_1XX2XX4XX"
+#define UART_110_STRING "1.10_UART"
+#define UART_130_STRING "1.30_UART"
+#define UART_140_STRING "1.40_UART"
+#define UART_160_STRING "1.60_UART"
+#define UART_161_STRING "1.61_UART"
+#define UART_202_STRING "2.02_UART"
+#define UART_21X_STRING "2.1X_UART"
 
 #define BUG_SHORT_PASSWORD "SHORT_PASSWORD"
 
-#define REPLACE_LIST_SIZE 67
-static string replaceList[REPLACE_LIST_SIZE][2] = { {  "DEVICE:5438_FAMILY ",               "UART_5XX PARITY:NONE BUG:SHORT_PASSWORD "},
-                                                    {  "DEVICE:5xx_STANDARD_UART ",         UART_5XX_STRING},
-                                                    {  "DEVICE:5xx_STANDARD_USB ",          USB_5XX_STRING},
-                                                    {  "DEVICE:FRAM_STANDARD_UART ",        UART_FRAM_STRING},
-													// Actual UART 5xx Devices Below
-                                                    {  "DEVICE:MSP430F5438 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5437 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5436 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5435 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5419 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5418 ",               "DEVICE:5438_FAMILY "},
-                                                    {  "DEVICE:MSP430F5438A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-                                                    {  "DEVICE:MSP430F5437A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-                                                    {  "DEVICE:MSP430F5436A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-                                                    {  "DEVICE:MSP430F5435A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-                                                    {  "DEVICE:MSP430F5419A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-                                                    {  "DEVICE:MSP430F5418A ",              "DEVICE:5xx_STANDARD_UART INVOKE:2 "},
-													// Actual FRAM Devices below
-                                                    {  "DEVICE:MSP430FR5720 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5721 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5722 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5723 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5724 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5725 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5726 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5727 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5728 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5729 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5730 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5731 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5732 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5733 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5734 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5735 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5736 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5737 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5738 ",              "DEVICE:FRAM_STANDARD_UART "},
-                                                    {  "DEVICE:MSP430FR5739 ",              "DEVICE:FRAM_STANDARD_UART "},
-													// Actual USB 5xx Devices Below
-                                                    {  "DEVICE:MSP430F5529 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5528 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5527 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5526 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5525 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5524 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5522 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5521 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5519 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5517 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5515 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5514 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5510 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5509 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5508 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5507 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5506 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5505 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5504 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5503 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5502 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5501 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F5500 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6638 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6636 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6635 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6634 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6633 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6632 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6631 ",               "DEVICE:5xx_STANDARD_USB "},
-                                                    {  "DEVICE:MSP430F6630 ",               "DEVICE:5xx_STANDARD_USB "},
-
-}; // end of device table
 
 /**************************************************************************//**
 * Factory Class Constructor.
@@ -190,7 +142,7 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		{
 			theBSLConnection = new MSPBSL_ConnectionFRAMFamily( initString );
 		}
-		else                                                                // otherwise, any other UART device
+		else                                                                // otherwise, any other 5xx UART device
 		{
 			theBSLConnection = new MSPBSL_Connection5xx( initString );
 		}
@@ -207,17 +159,53 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		MSPBSL_PacketHandler5xxUSB* p = new MSPBSL_PacketHandler5xxUSB( initString );
 		p->setPhysicalInterface( s );
 		theBSLConnection->setPacketHandler(p);
-	}
+	} // all 5XX USB BSLs handled
+	else if ( initString.find( UART_1XX_2XX_4XX_STRING ) != string::npos)		//if it's a 1xx/2xx/4xx UART device
+	{
+		if(initString.find( UART_110_STRING ) !=string::npos )
+		{
+			theBSLConnection = new MSPBSL_Connection_v1_10( initString );
+		}
+		else if(initString.find( UART_130_STRING ) !=string::npos )
+		{
+			theBSLConnection = new MSPBSL_Connection_v1_3x( initString );
+		}
+		else if(initString.find( UART_140_STRING ) !=string::npos )
+		{
+			theBSLConnection = new MSPBSL_Connection_v1_4x( initString );
+		}
+		else if( (initString.find( UART_160_STRING ) != string::npos) || (initString.find( UART_161_STRING ) != string::npos) )
+		{
+			theBSLConnection = new MSPBSL_Connection_v1_6x( initString );
+		}
+		else if(initString.find( UART_202_STRING ) !=string::npos )
+		{
+			theBSLConnection = new MSPBSL_Connection_v2_xx( initString );
+		}
+		else if(initString.find( UART_21X_STRING ) !=string::npos )
+		{
+			theBSLConnection = new MSPBSL_Connection_v2_1x( initString );
+		}
+		else
+		{
+			theBSLConnection = new MSPBSL_Connection1xx_2xx_4xx( initString );
+		}
 
+		//theBSLConnection = dynamic_cast<MSPBSL_Connection*>(theBSLConnection);
 
+		MSPBSL_PhysicalInterfaceSerialUART* s  = new MSPBSL_PhysicalInterfaceSerialUART( initString ); // Parity handled in object;
+		MSPBSL_PacketHandler1xx_2xx_4xxUART* p = new MSPBSL_PacketHandler1xx_2xx_4xxUART( initString );
+		p->setPhysicalInterface( s );
+		theBSLConnection->setPacketHandler(p);
+	} // all 1xx/2xx/4xx UART BSLs handled
 
 	return theBSLConnection;
 }
 
 /**************************************************************************//**
-* Expand init string.
+* Open the device list file and expand init string.
 *
-* Mostly used internally by the factory.  This takes a initialization string
+* Mostly used internally by the factory. This takes a initialization string
 * and returns the expanded value which is used to initialize the sub-layers
 *
 * \param init a string containing configuration parameters
@@ -227,25 +215,30 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 ******************************************************************************/
 string MSPBSL_Factory::expandInitString( string init )
 {
-	int full_loop = 0;
-	init += " "; // add string at back since we search for strings with space following (to distinguish between A/non-A versions
-	do
-	{
-		full_loop = 1;
-		for( unsigned int i = 0; i < REPLACE_LIST_SIZE; i++ )
-		{
-			if( init.find( replaceList[i][0] ) !=string::npos )
-			{
-				full_loop = init.find( replaceList[i][0] ); // using as pointer to location
-				init.erase( init.find( replaceList[i][0]), replaceList[i][0].size() );
-				init.insert( full_loop, replaceList[i][1]);
-				full_loop = 0;
-				break;
-			}
-		}
+	uint32_t i,j,k;
 
+	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
+
+	ifstream t("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/MSPBSL_Device_List.txt", ifstream::out); // TODO
+	stringstream s;
+	s << t.rdbuf();
+	string replaceList = s.str();
+	t.close();
+
+	init += ","; // add string at back since we search for strings with comma following (to distinguish between A/non-A versions)
+	k=0;
+
+	while( (replaceList.find(init) != string::npos) && (k < 100) )
+	{
+		i = replaceList.find( init ) + init.length();
+		i = replaceList.find_first_not_of(ignore , i);
+		j = replaceList.find(";",i);
+		init = replaceList.substr(i, (j-i));
+		init += ","; 
+		k++;	//avoid endless loops
 	}
-	while( full_loop == 0);
+	init.resize(init.size()-1);		//erase the "," at the end of the string
+	init += " ";					//space at the end is necesary for correct parsing in the PhysicalInterface.
 
 	return init;
 }

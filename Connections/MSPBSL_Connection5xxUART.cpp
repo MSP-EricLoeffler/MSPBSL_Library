@@ -40,16 +40,16 @@
 #include "MSPBSL_PhysicalInterfaceSerialUART.h"
 
 /***************************************************************************//**
-* MSPBSL_Connection5xxUSB Constructor.
+* MSPBSL_Connection5xxUART Constructor.
 *        
-* \return a MSPBSL_Connection5xxUSB class
+* \return a MSPBSL_Connection5xxUART class
 ******************************************************************************/
 MSPBSL_Connection5xxUART::MSPBSL_Connection5xxUART(string initString) : MSPBSL_Connection5xx( initString)
 {
 }
 
 /***************************************************************************//**
-* MSPBSL_Connection5xxUSB Destructor.
+* MSPBSL_Connection5xxUART Destructor.
 *        
 ******************************************************************************/
 MSPBSL_Connection5xxUART::~MSPBSL_Connection5xxUART(void)

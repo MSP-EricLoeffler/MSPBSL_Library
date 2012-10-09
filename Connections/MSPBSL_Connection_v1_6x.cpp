@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection5438Family
+ * MSPBSL_Connection_v1_6x
  *
- * A subclass to add 5438 (non-A) specific connection functions
+ * A subclass to add bugfixes and enhance functionality
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,66 +36,66 @@
  *
 */
 
-
-#include "MSPBSL_Connection5438Family.h"
+#include "MSPBSL_Connection_v1_6x.h"
 
 
 /***************************************************************************//**
-* MSPBSL_Connection5438Family Class Constructor.
-*
-* Creates a 5/6xx General Connection using the supplied parameters
-*
-* \param initString an initialization string for the connection
+* MSPBSL_Connection_v1_6x Constructor.
 *        
-* \return a MSPBSL_Connection5438Family class
+* \return a MSPBSL_Connection_v1_6x class
 ******************************************************************************/
-MSPBSL_Connection5438Family::MSPBSL_Connection5438Family(string initString) : MSPBSL_Connection5xxUART( initString)
+MSPBSL_Connection_v1_6x::MSPBSL_Connection_v1_6x(string initString) : MSPBSL_Connection1xx_2xx_4xx( initString)
 {
 }
 
 /***************************************************************************//**
-* MSPBSL_Connection5438Family Class Destructor.
-*
+* MSPBSL_Connection_v1_6x Destructor.
+*        
 ******************************************************************************/
-MSPBSL_Connection5438Family::~MSPBSL_Connection5438Family(void)
+MSPBSL_Connection_v1_6x::~MSPBSL_Connection_v1_6x(void)
 {
 }
 
+
+
+
 /***************************************************************************//**
-* The 5438 Standard RX Password Command
+* The 1xx_2xx_4xx Change Baudrate Command
 *
-* Creates a databuffer containing a standard 5438 RX Password Command, and passes 
-* this on to the Packet Handler layer for sending.  Note: This command accepts 
-* no parameters as it sends a default (16x 0xFF) password
-*        
+* Creates a databuffer containing a standard 1xx_2xx_4xx Change Baudrate Command, and passes 
+* this on to the Packet Handler layer for sending.
+*
+* Note: This Command is only implemented in BSL versions 1.60 and above
+*  
+* \param D1 set processor frequency (see BSL Manual for details: SLAU319 - 2.4.4.8)
+* \param D2 set processor frequency (see BSL Manual for details: SLAU319 - 2.4.4.8)
+* \param D3 set flash timing generator freq. (see BSL Manual for details: SLAU319 - 2.4.4.8)
+*
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection5438Family::RX_Password(void)
-{
-	uint8_t buf_array[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	return RX_Password( buf_array );
-}
 
-/***************************************************************************//**
-* Thex 5438 Standard RX Password Command
-*
-* Creates a databuffer containing a standard 5/6xx RX Password Command, and passes 
-* this on to the Packet Handler layer for sending.  Note: This command accepts 
-* no parameters as it sends a default (16x 0xFF) password
-*        
-* \return the value returned by the connected BSL, or underlying connection layers
-******************************************************************************/
-uint16_t MSPBSL_Connection5438Family::RX_Password(uint8_t* password)
+uint16_t MSPBSL_Connection_v1_6x::ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 )
 {
-	uint8_t passwordPacket[17];
-	passwordPacket[0] = RX_PASSWORD_COMMAND;
-	for( uint8_t i = 0; i < 17; i++ )
+  uint8_t ChangeBaudrateCommand[7];
+  uint16_t retValue = 0;
+  ChangeBaudrateCommand[0] = CHANGE_BAUD_RATE_CMD;
+  ChangeBaudrateCommand[1] = 0x04;
+  ChangeBaudrateCommand[2] = 0x04;
+  ChangeBaudrateCommand[3] = D1;				
+  ChangeBaudrateCommand[4] = D2;	 				
+  ChangeBaudrateCommand[5] = D3;
+  ChangeBaudrateCommand[6] = 0x00;
+
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(ChangeBaudrateCommand, 7);
+
+	if( retValue != ACK )
 	{
-		passwordPacket[i+1] = password[i];
+		return retValue;
 	}
-	
-    return MSPBSL_Connection5xx::sendPacketExpectMessage(passwordPacket, 17);
+
+	return retValue;	
 }
+
 
 /***************************************************************************//**
 * An error description function
@@ -107,7 +107,7 @@ uint16_t MSPBSL_Connection5438Family::RX_Password(uint8_t* password)
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_Connection5438Family::getErrorInformation( uint16_t err )
+string MSPBSL_Connection_v1_6x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection5xxUART::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }
