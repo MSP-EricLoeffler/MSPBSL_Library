@@ -51,7 +51,7 @@ public:
 	MSPBSL_Connection_v2_1x(string initString);
 	virtual ~MSPBSL_Connection_v2_1x(void);
 
-
+	virtual uint16_t RX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes ); 
 
 	virtual string getErrorInformation( uint16_t err );
 
