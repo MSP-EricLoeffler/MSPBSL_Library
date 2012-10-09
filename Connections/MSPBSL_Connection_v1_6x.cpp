@@ -78,7 +78,7 @@ uint16_t MSPBSL_Connection_v1_6x::ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_
 {
   uint8_t ChangeBaudrateCommand[7];
   uint16_t retValue = 0;
-  ChangeBaudrateCommand[0] = CHANGE_BAUD_RATE_COMMAND;
+  ChangeBaudrateCommand[0] = CHANGE_BAUD_RATE_CMD;
   ChangeBaudrateCommand[1] = 0x04;
   ChangeBaudrateCommand[2] = 0x04;
   ChangeBaudrateCommand[3] = D1;				

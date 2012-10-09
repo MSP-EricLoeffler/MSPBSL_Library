@@ -151,13 +151,13 @@ uint16_t MSPBSL_Connection5xx::TX_BufferSize(uint16_t* bufSize)
 	  {
 		  if( command[0] == MESSAGE_RESPONSE ) // we have a message 
 		  {
-			  retValue = command[1];   // return the message
+			  retValue = command[1];   // return the message --Array 'command[1]' accessed at index 1, which is out of bounds.
 		  }
 		  else if( command[0] == DATA_RESPONSE ) // we have the size
 		  {
 			  //parse buffer
-			  *bufSize = ((uint32_t)command[2])<<8;
-			  *bufSize |= ((uint32_t)command[1]);
+			  *bufSize = ((uint32_t)command[2])<<8;  //--Array 'command[1]' accessed at index 2, which is out of bounds.
+			  *bufSize |= ((uint32_t)command[1]);	 //--Array 'command[1]' accessed at index 1, which is out of bounds.
 			  retValue = OPERATION_SUCCESSFUL;
 		  }
 		  else

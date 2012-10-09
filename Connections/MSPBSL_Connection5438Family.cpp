@@ -89,7 +89,7 @@ uint16_t MSPBSL_Connection5438Family::RX_Password(uint8_t* password)
 {
 	uint8_t passwordPacket[17];
 	passwordPacket[0] = RX_PASSWORD_COMMAND;
-	for( uint8_t i = 0; i < 167; i++ )
+	for( uint8_t i = 0; i < 17; i++ )
 	{
 		passwordPacket[i+1] = password[i];
 	}

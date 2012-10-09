@@ -111,7 +111,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::setPC(uint32_t addr16)
 {
 	uint16_t addr = addr16 & 0xFFFF;	
 	uint8_t command[7];
-	command[0]=LOAD_PC_COMMAND;
+	command[0]=LOAD_PC_CMD;
 	command[1]=0x04;						// L1
 	command[2]=0x04;						// L2
 	command[3]= uint8_t(addr & 0x00FF);		// AL
@@ -136,7 +136,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::setPC(uint32_t addr16)
 uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseSegment(uint16_t addr)
 {
   uint8_t command[7];
-  command[0]=ERASE_SEGMENT_COMMAND;
+  command[0]=ERASE_SEGMENT_CMD;
   command[1]=0x04;               // L1
   command[2]=0x04;               // L1
   command[3]=((addr)&0xFF);      // AL
@@ -182,12 +182,12 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(uint8_t* data, uint32_t star
 
 		uint8_t* txDataBuf = NULL;
 		txDataBuf = new uint8_t[currentPacketNumBytes+7];
-		txDataBuf[0] = RX_DATA_BLOCK_COMMAND;
+		txDataBuf[0] = RX_DATA_BLOCK_CMD;
 		txDataBuf[1] = currentPacketNumBytes+4;			//L1
 		txDataBuf[2] = currentPacketNumBytes+4;			//L2
 		txDataBuf[3] = ((currentStartAddr)&0xFF);      // AL
 		txDataBuf[4] = ((currentStartAddr>>8)&0xFF);   // AH
-		txDataBuf[5] = currentPacketNumBytes;			//LL
+		txDataBuf[5] = (uint8_t)currentPacketNumBytes;			//LL
 		txDataBuf[6] = 0x00;							//LH
 
 		for( uint16_t i = 0; i < currentPacketNumBytes; i++,currentBytePointer++ )
@@ -250,7 +250,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock( uint8_t* data, uint32_t sta
 		  numBytes = 0;	//exit loop after reception of the last bytes
 	  }
 
-	  command[0]=TX_DATA_BLOCK_COMMAND;
+	  command[0]=TX_DATA_BLOCK_CMD;
 	  command[1]=0x04;									// L1
 	  command[2]=0x04;									// L2
 	  command[3]=((startAddr)&0xFF);					// AL
@@ -304,7 +304,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::TX_BSL_Version(string& versionString)
   uint8_t rxedDataPacket[16];
   uint8_t commandPacket[7];
 
-  commandPacket[0] = TX_BSL_VERSION_COMMAND;
+  commandPacket[0] = TX_BSL_VERSION_CMD;
   commandPacket[1] = 0x04;
   commandPacket[2] = 0x04;
   commandPacket[3] = 0x00;
@@ -367,7 +367,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::RX_Password(uint8_t* password)
 	uint8_t passwordPacket[39];
 	uint16_t retValue = 0;
 
-	passwordPacket[0] = RX_PASSWORD_COMMAND;
+	passwordPacket[0] = RX_PASSWORD_CMD;
 	passwordPacket[1] = 0x24;	//L1
 	passwordPacket[2] = 0x24;	//L2
 	passwordPacket[3] = 0x00;	//AL
@@ -403,7 +403,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::massErase(void)
 {
   uint8_t massEraseCommand[7];
   uint16_t retValue = 0;
-  massEraseCommand[0] = MASS_ERASE_COMMAND;
+  massEraseCommand[0] = MASS_ERASE_CMD;
   massEraseCommand[1] = 0x04;
   massEraseCommand[2] = 0x04;
   massEraseCommand[3] = 0x00;	//AL
@@ -451,7 +451,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint16_t startAddr, uint32_t 
 	  }
 	  remainingBytes -= numBytes;
 
-	  InfoMainEraseCommand[0] = ERASE_CHECK_COMMAND;
+	  InfoMainEraseCommand[0] = ERASE_CHECK_CMD;
 	  InfoMainEraseCommand[1] = 0x04;
 	  InfoMainEraseCommand[2] = 0x04;
 	  InfoMainEraseCommand[3] = ((startAddr)&0xFF);					// AL
@@ -486,7 +486,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::InfoMainErase(uint16_t startAddr)
 {
   uint8_t InfoMainEraseCommand[7];
   uint16_t retValue = 0;
-  InfoMainEraseCommand[0] = ERASE_MAIN_COMMAND;
+  InfoMainEraseCommand[0] = ERASE_MAIN_CMD;
   InfoMainEraseCommand[1] = 0x04;
   InfoMainEraseCommand[2] = 0x04;
   InfoMainEraseCommand[3]=((startAddr)&0xFF);					// AL

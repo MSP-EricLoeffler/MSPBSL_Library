@@ -39,6 +39,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <fstream>
+#include <streambuf>
 #include "MSPBSL_PacketHandler.h"
 #include <boost/cstdint.hpp>
 #include <boost/lexical_cast.hpp>
@@ -52,7 +54,8 @@ using namespace std;
 //Error footer (lower 8 bits) definitions
 #define GENERAL_BSL_CONNECTION_ERROR      MSPBSL_ConnectionError(0xEE)
 #define UNEXPECTED_VALUE                  MSPBSL_ConnectionError(0x01)
-#define	DATA_VERIFICATION_ERROR			  MSPBSL_ConnectionError(0x02)	
+#define	DATA_VERIFICATION_ERROR			  MSPBSL_ConnectionError(0x02)
+#define	TXT_FILE_PARSER_ERROR			  MSPBSL_ConnectionError(0x03)	
 
 // General BSL defines
 #define BSL_ERROR_HEADER             0x0000
@@ -87,4 +90,6 @@ public:
 	virtual MSPBSL_PacketHandler* getPacketHandler();
 	virtual void setPacketHandler(MSPBSL_PacketHandler* protocol);
 
+	uint16_t Load_File(string file);
+	uint8_t hextoint(char c);
 };

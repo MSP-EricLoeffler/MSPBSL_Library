@@ -67,6 +67,111 @@ void MSPBSL_Connection::setPacketHandler(MSPBSL_PacketHandler* handler)
 	thePacketHandler = handler;
 }
 
+
+/***************************************************************************//**
+* A small function that converts chars 0-F to integers 0-16
+*
+* \param hex the char representing a hex number
+* 
+******************************************************************************/
+uint8_t MSPBSL_Connection::hextoint(char hex){
+	if( (hex >= '0') && (hex <= '9') ){
+		return(uint8_t(hex - '0'));
+	}
+	else if( (hex >= 'a') && (hex <= 'f') ){
+		return(uint8_t(10 + hex - 'a'));
+	}
+	else if( (hex >= 'A') && (hex <= 'F') ){
+		return(uint8_t(10 + hex - 'A'));
+	}
+	else{
+		return 0xFF;
+	}
+}
+
+
+/***************************************************************************//**
+* Opens a TI txt file, parses it and writes the content to the device memory 
+*
+* \param file the name and location of the .txt-file
+* 
+******************************************************************************/
+
+uint16_t MSPBSL_Connection::Load_File(string file)
+{
+	uint16_t retValue = ACK;
+	uint32_t i,j,block_start, block_end, block_offset=0, startadress, datasize, datapointer;
+	uint8_t lastblock=0;
+	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
+	string hexchars = "0123456789abcdefABCDEF";
+	ifstream txt(file, ifstream::out); 
+	stringstream s;
+	s << txt.rdbuf();
+	string filestring = s.str();
+	txt.close();
+
+	while(!lastblock)
+	{
+		//get start and end of current data block
+		block_start=file.find("@", block_offset);	
+		block_end=file.find_first_of("@q", block_start+1);
+		block_offset=block_end+1;
+		uint8_t* data;
+		if(file[block_end] == 'q')
+		{
+			lastblock = 1;
+		}
+
+		//get start adress 
+		i=file.find_first_of(ignore, block_start)-1;	//find last char of adress
+		j=0;
+		startadress=0;
+		while(i != block_start) //manually calculate adress
+		{
+			startadress += hextoint(file[i]) * pow(double(16), int(j));
+			i--;
+			j++;
+		}
+
+		//parse data
+		i=file.find_first_of(ignore, block_start);//put pointer after adress
+		datapointer=0;
+		datasize=0;
+		data = new uint8_t[( block_end - block_start )];	//should be enough space, too much actually
+		while(i < block_end)
+		{
+			if(hextoint(file[i]) == 0xFF)
+			{
+				i++;
+				continue; //increase pointer if no hex character
+			}
+
+			//high nibble
+			data[datapointer] = 16 * hextoint(file[i]);
+			i++;
+			//low nibble
+			data[datapointer] += hextoint(file[i]);
+
+			if(hextoint(file[i]) == 255)
+			{
+				return TXT_FILE_PARSER_ERROR;
+			}
+
+			i++;
+			datapointer++;
+		}
+
+		datasize = datapointer + 1;
+		retValue |= RX_DataBlock(data, startadress, datasize);
+		delete[] data;
+	}//parser mainloop
+
+
+
+	return retValue;
+}
+
+
 /***************************************************************************//**
 * An error description function
 *

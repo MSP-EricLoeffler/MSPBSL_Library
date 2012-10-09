@@ -75,7 +75,7 @@ uint16_t MSPBSL_Connection_v2_1x::SetMemOffset(uint16_t OffsetValue)
 {
   uint8_t SetMemOffsetCommand[7];
   uint16_t retValue = 0;
-  SetMemOffsetCommand[0] = SET_MEM_OFFSET_COMMAND;
+  SetMemOffsetCommand[0] = SET_MEM_OFFSET_CMD;
   SetMemOffsetCommand[1] = 0x04;
   SetMemOffsetCommand[2] = 0x04;
   SetMemOffsetCommand[3] = 0x00;					// AL

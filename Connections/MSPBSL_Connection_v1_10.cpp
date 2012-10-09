@@ -110,7 +110,7 @@ uint16_t MSPBSL_Connection_v1_10::TX_DataBlock( uint8_t* data, uint32_t startAdd
 		  numBytes = 0;	//exit loop after reception of the last bytes
 	  }
 
-	  command[0]=TX_DATA_BLOCK_COMMAND;
+	  command[0]=TX_DATA_BLOCK_CMD;
 	  command[1]=0x04;									// L1
 	  command[2]=0x04;									// L2
 	  command[3]=((startAddr)&0xFF);					// AL
@@ -199,12 +199,12 @@ uint16_t MSPBSL_Connection_v1_10::RX_DataBlock( uint8_t* data, uint32_t startAdd
 
 		uint8_t* txDataBuf = NULL;
 		txDataBuf = new uint8_t[currentPacketNumBytes+7];
-		txDataBuf[0] = RX_DATA_BLOCK_COMMAND;
+		txDataBuf[0] = RX_DATA_BLOCK_CMD;
 		txDataBuf[1] = currentPacketNumBytes+4;			//L1
 		txDataBuf[2] = currentPacketNumBytes+4;			//L2
 		txDataBuf[3] = ((currentStartAddr)&0xFF);      // AL
 		txDataBuf[4] = ((currentStartAddr>>8)&0xFF);   // AH
-		txDataBuf[5] = currentPacketNumBytes;			//LL
+		txDataBuf[5] = (uint8_t)currentPacketNumBytes;	//LL
 		txDataBuf[6] = 0x00;							//LH
 
 		for( uint16_t i = 0; i < currentPacketNumBytes; i++,currentBytePointer++ )
@@ -372,7 +372,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_Password(uint8_t* password)
 	uint8_t passwordPacket[39];
 	uint16_t retValue = 0;
 
-	passwordPacket[0] = RX_PASSWORD_COMMAND;
+	passwordPacket[0] = RX_PASSWORD_CMD;
 	passwordPacket[1] = 0x24;	//L1
 	passwordPacket[2] = 0x24;	//L2
 	passwordPacket[3] = 0x00;	//AL

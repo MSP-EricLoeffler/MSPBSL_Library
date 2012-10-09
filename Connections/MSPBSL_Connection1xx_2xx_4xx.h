@@ -45,18 +45,18 @@
 #include "MSPBSL_Connection.h"
 
 //Commands
-#define RX_DATA_BLOCK_COMMAND		  0x12
-#define RX_PASSWORD_COMMAND			  0x10
-#define ERASE_SEGMENT_COMMAND		  0x16
-#define ERASE_MAIN_COMMAND			  0x16
-#define ERASE_INFO_COMMAND			  0x16
-#define MASS_ERASE_COMMAND			  0x18
-#define ERASE_CHECK_COMMAND			  0x1C
-#define CHANGE_BAUD_RATE_COMMAND	  0x20
-#define SET_MEM_OFFSET_COMMAND		  0x21
-#define LOAD_PC_COMMAND				  0x1A
-#define TX_DATA_BLOCK_COMMAND		  0x14
-#define TX_BSL_VERSION_COMMAND	      0x1E
+#define RX_DATA_BLOCK_CMD		  0x12
+#define RX_PASSWORD_CMD			  0x10
+#define ERASE_SEGMENT_CMD		  0x16
+#define ERASE_MAIN_CMD			  0x16
+#define ERASE_INFO_CMD			  0x16
+#define MASS_ERASE_CMD			  0x18
+#define ERASE_CHECK_CMD			  0x1C
+#define CHANGE_BAUD_RATE_CMD	  0x20
+#define SET_MEM_OFFSET_CMD		  0x21
+#define LOAD_PC_CMD				  0x1A
+#define TX_DATA_BLOCK_CMD		  0x14
+#define TX_BSL_VERSION_CMD	      0x1E
 
 #define YES			0x01
 #define NO			0x00
