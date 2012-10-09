@@ -104,3 +104,4 @@ string MSPBSL_PacketHandler::getErrorInformation( uint16_t err )
 
 	return thePhysicalInterface->getErrorInformation( err );
 }
+

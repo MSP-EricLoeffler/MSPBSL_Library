@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection5438Family
+ * MSPBSL_Connection_v1_4x
  *
- * A subclass to add 5438 (non-A) specific connection functions
+ * A subclass to add bugfixes and enhance functionality
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,65 +36,91 @@
  *
 */
 
-
-#include "MSPBSL_Connection5438Family.h"
+#include "MSPBSL_Connection_v1_4x.h"
 
 
 /***************************************************************************//**
-* MSPBSL_Connection5438Family Class Constructor.
-*
-* Creates a 5/6xx General Connection using the supplied parameters
-*
-* \param initString an initialization string for the connection
+* MSPBSL_Connection_v1_4x Constructor.
 *        
-* \return a MSPBSL_Connection5438Family class
+* \return a MSPBSL_Connection_v1_4x class
 ******************************************************************************/
-MSPBSL_Connection5438Family::MSPBSL_Connection5438Family(string initString) : MSPBSL_Connection5xxUART( initString)
+MSPBSL_Connection_v1_4x::MSPBSL_Connection_v1_4x(string initString) : MSPBSL_Connection1xx_2xx_4xx( initString)
 {
 }
 
 /***************************************************************************//**
-* MSPBSL_Connection5438Family Class Destructor.
-*
+* MSPBSL_Connection_v1_4x Destructor.
+*        
 ******************************************************************************/
-MSPBSL_Connection5438Family::~MSPBSL_Connection5438Family(void)
+MSPBSL_Connection_v1_4x::~MSPBSL_Connection_v1_4x(void)
 {
 }
 
 /***************************************************************************//**
-* The 5438 Standard RX Password Command
+* Alternative TX BSL Version Command
 *
-* Creates a databuffer containing a standard 5438 RX Password Command, and passes 
-* this on to the Packet Handler layer for sending.  Note: This command accepts 
-* no parameters as it sends a default (16x 0xFF) password
+* reads the content of registers 0FFAh and 0x0FF0, which store the BSL version and chip ID
+*
+* Note: As the Standard TX BSL Version Command is not implemented in BSL versions below 1.5 
+* and 2.x, this function emulates the command via the TX Data Block Command.
+*
+* \param versionString a reference to a string which will store the returned version
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection5438Family::RX_Password(void)
+
+uint16_t MSPBSL_Connection_v1_4x::TX_BSL_Version(string& versionString)
 {
-	uint8_t buf_array[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	return RX_Password( buf_array );
+	uint16_t retbuf = 0;
+	uint8_t data[2];
+	versionString = "";
+
+	retbuf = TX_DataBlock( data, 0x0FF0 , 0x0002);
+
+	versionString += (data[0]);
+	versionString += (data[1]);
+
+	retbuf = TX_DataBlock( data, 0x0FFA, 0x0002 );
+
+	versionString += (data[0]);
+	versionString += (data[1]);
+
+	return retbuf;
 }
 
 /***************************************************************************//**
-* Thex 5438 Standard RX Password Command
+* Alternative Erase Check Command
 *
-* Creates a databuffer containing a standard 5/6xx RX Password Command, and passes 
-* this on to the Packet Handler layer for sending.  Note: This command accepts 
-* no parameters as it sends a default (16x 0xFF) password
-*        
+* reads the memory and checks it against 0xFFFF.
+*
+* NOTE: As the Standard Erase Check Command is not implemented in BSL versions
+* below 1.5 and 2.x, this function emulates the command via the TX Data Block Command.
+*  
+* \param startAddr the start address of the device memory to be checked 
+* \param numBytes the length (number of bytes) of the erased memory
+*
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection5438Family::RX_Password(uint8_t* password)
+
+uint16_t MSPBSL_Connection_v1_4x::eraseCheck( uint16_t startAddr, uint32_t numBytes )
 {
-	uint8_t passwordPacket[17];
-	passwordPacket[0] = RX_PASSWORD_COMMAND;
-	for( uint8_t i = 0; i < 17; i++ )
+	uint16_t retValue = 0;
+  
+	uint8_t* data = new uint8_t[numBytes];
+
+	TX_DataBlock( data, startAddr, numBytes );
+
+	for(uint32_t i=0 ; i<numBytes ; i++ )
 	{
-		passwordPacket[i+1] = password[i];
+		if(data[i] != 0xff){
+			retValue=DATA_VERIFICATION_ERROR;
+			i = numBytes; //exit loop
+		}
 	}
-	
-    return MSPBSL_Connection5xx::sendPacketExpectMessage(passwordPacket, 17);
+
+	delete [] data;
+
+	return retValue;
 }
 
 /***************************************************************************//**
@@ -107,7 +133,7 @@ uint16_t MSPBSL_Connection5438Family::RX_Password(uint8_t* password)
 *
 * \return A string describing the error code
 ******************************************************************************/
-string MSPBSL_Connection5438Family::getErrorInformation( uint16_t err )
+string MSPBSL_Connection_v1_4x::getErrorInformation( uint16_t err )
 {
-	return MSPBSL_Connection5xxUART::getErrorInformation( err );
+	return MSPBSL_Connection1xx_2xx_4xx::getErrorInformation( err );
 }

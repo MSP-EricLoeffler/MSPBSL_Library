@@ -38,19 +38,37 @@
 
 #include "MSPBSL_CRCEngine.h"
 
+
+#define STATE_1_2_4xx 0x01
+#define STATE_5xx 0x02
+
 uint16_t crc16Value;
+uint16_t checksumValue;
+uint16_t state;
+uint16_t byteCount;
+
 
 /**************************************************************************//**
 * CRC Engine Class Constructor.
 *
 * Creates a CRC Engine using the supplied parameters
 *
-* \param initString an initialization string for the CRC engine
+* \param initString an initialization string for the CRC engine ("1/2/4xx" or "5/6xx")
 *        
 * \return a BSL430_CRC_Engine class
 ******************************************************************************/
 MSPBSL_CRCEngine::MSPBSL_CRCEngine(string initString)
 {
+
+	if( initString.compare("5/6xx") == 0 ){
+		state = STATE_5xx;
+	}
+	else if ( initString.compare("1/2/4xx") == 0 ){
+		state = STATE_1_2_4xx;
+		byteCount = 0;
+		checksumValue = 0xFFFF;
+	}
+
 }
 
 /**************************************************************************//**
@@ -75,6 +93,19 @@ void MSPBSL_CRCEngine::initEngine(uint16_t seed)
 }
 
 /**************************************************************************//**
+* CRC Engine intializaer.
+*
+* Initializes the CRC engine for the 1/2/4xx-BSL. No seed required.
+*        
+******************************************************************************/
+void MSPBSL_CRCEngine::initEngine()
+{
+	if(state == STATE_1_2_4xx){
+		checksumValue =  0xFFFF;
+	}
+}
+
+/**************************************************************************//**
 * Adds a byte to the ongoing CRC
 *
 * \param byte a 8 bit value to add to the CRC
@@ -83,9 +114,22 @@ void MSPBSL_CRCEngine::initEngine(uint16_t seed)
 void MSPBSL_CRCEngine::addByte(uint8_t byte)
 {
 	uint8_t x;
-    x = ((crc16Value>>8) ^ byte) & 0xff;
-    x ^= x>>4;
-    crc16Value = (crc16Value << 8) ^ (x << 12) ^ (x <<5) ^ x;
+	uint16_t y;
+	if(state == STATE_5xx){
+		x = ((crc16Value>>8) ^ byte) & 0xff;
+		x ^= x>>4;
+		crc16Value = (crc16Value << 8) ^ (x << 12) ^ (x <<5) ^ x;
+	}
+	else if(state == STATE_1_2_4xx){
+		y = byte;
+		if( byteCount & 0x0001 ){
+			y = (y << 8) & 0xFF00;			//If the Number of the Byte is even (B2, B4, ...), XOR it to CKH
+		}
+		checksumValue = checksumValue ^ 0xFFFF;	// reverse the invertion
+		checksumValue = checksumValue ^ y;		// XOR the next byte
+		checksumValue = checksumValue ^ 0xFFFF;	// inverse it again
+		byteCount++;
+	}
 }
 
 /**************************************************************************//**
@@ -117,7 +161,17 @@ void MSPBSL_CRCEngine::addBytes(uint8_t* buf, uint16_t numBytes)
 uint16_t MSPBSL_CRCEngine::verify( uint8_t* buf, uint16_t numBytes, uint16_t crc )
 {
 	addBytes(buf, numBytes);
-	return (crc16Value == crc );
+
+	if(state == STATE_5xx)
+	{
+		return (crc16Value == crc );
+	}
+	else if(state == STATE_1_2_4xx)
+	{
+		return (checksumValue == crc );
+	}
+
+	return (0);
 }
 
 /**************************************************************************//**
@@ -128,7 +182,12 @@ uint16_t MSPBSL_CRCEngine::verify( uint8_t* buf, uint16_t numBytes, uint16_t crc
 ******************************************************************************/
 uint16_t MSPBSL_CRCEngine::getLowByte()
 {
-	return (uint8_t)(crc16Value&0xFF);
+	if (state == STATE_5xx){
+		return (uint8_t(crc16Value&0xFF));
+	}
+	else{
+		return (uint8_t(checksumValue&0xFF));
+	}
 }
 
 /**************************************************************************//**
@@ -139,6 +198,11 @@ uint16_t MSPBSL_CRCEngine::getLowByte()
 ******************************************************************************/
 uint16_t MSPBSL_CRCEngine::getHighByte()
 {
-	return (uint8_t)((crc16Value>>8)&0xFF);
+	if (state == STATE_5xx){
+		return (uint8_t((crc16Value>>8)&0xFF));
+	}
+	else{
+		return (uint8_t((checksumValue>>8)&0xFF));
+	}
 }
 		

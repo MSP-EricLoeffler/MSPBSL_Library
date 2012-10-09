@@ -41,6 +41,7 @@
 #include <boost/asio.hpp> // include boost
 #include <boost/thread/thread.hpp>
 #include <iostream>
+#include <boost/iostreams/flush.hpp>
 //#include <boost/cstdint.hpp>
 #include "MSPBSL_PhysicalInterface.h"
 
@@ -50,6 +51,9 @@ using namespace::boost::asio;
 
 #define LOW  false
 #define HIGH true
+
+#define STANDARD_INVOKE   0x01
+#define BSL_XXXX_INVOKE   0x02
 
 #define ERROR_WRITING_DATA                 MSPBSL_PhysicalInterfaceError(0x01)
 #define ERROR_READING_DATA                 MSPBSL_PhysicalInterfaceError(0x02)
