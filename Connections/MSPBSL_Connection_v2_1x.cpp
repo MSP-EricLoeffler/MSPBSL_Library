@@ -198,6 +198,99 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 }
 
 /***************************************************************************//**
+* Modified Alternative TX BSL Version Command
+*
+* Makes sure, the MemoryOffset is 0, then
+* reads the content of registers 0FFAh and 0x0FF0, which store the BSL version and chip ID
+*
+* Note: As the Standard TX BSL Version Command is not implemented in BSL versions below 1.5 
+* and 2.x, this function emulates the command via the TX Data Block Command.
+*
+* \param versionString a reference to a string which will store the returned version
+*        
+* \return the value returned by the connected BSL, or underlying connection layers
+******************************************************************************/
+
+uint16_t MSPBSL_Connection_v2_1x::TX_BSL_Version(string& versionString)
+{
+	uint16_t retValue = 0;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);
+	retValue |= MSPBSL_Connection_v2_xx::TX_BSL_Version(versionString);
+	return retValue;
+}
+
+/***************************************************************************//**
+* Modified Standard Set PC Command
+*
+* Sets the MemoryOffset, then calls the 1xx_2xx_4xx Standard Set PC Command
+*
+* \param addr a 16-bit address where the device should begin to execute
+*        
+* \return the result of packet handler's Packet Transmission.  Note: This only
+*         means the caller knows if the packet was sucessfully sent to the BSL, 
+*         not whether the desired address is executing correctly
+******************************************************************************/
+uint16_t MSPBSL_Connection_v2_1x::setPC(uint32_t addr)
+{
+	uint16_t retValue = 0;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection1xx_2xx_4xx::setPC( (addr && 0xFFFF) );
+	return retValue;
+}
+
+/***************************************************************************//**
+* Modified Standard Erase Segment Command
+*
+* Sets the MemoryOffset, then calls the 1xx_2xx_4xx Standard Erase Segment Command
+*
+* \param addr a 16-bit address which is in the desired segment to erase
+*        
+* \return the value returned by the connected BSL, or underlying connection layers
+******************************************************************************/
+uint16_t MSPBSL_Connection_v2_1x::eraseSegment(uint32_t addr)
+{
+	uint16_t retValue = 0;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection1xx_2xx_4xx::eraseSegment( (addr && 0xFFFF) );
+	return retValue;
+}
+
+/***************************************************************************//**
+* Modified Standard Info/Main Erase Command
+*
+* Sets the MemoryOffset, then calls the 1xx_2xx_4xx Standard Info/Main Erase Command
+*        
+* \return the value returned by the connected BSL, or underlying connection layers
+******************************************************************************/
+
+uint16_t MSPBSL_Connection_v2_1x::InfoMainErase(uint32_t addr)
+{
+	uint16_t retValue = 0;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection1xx_2xx_4xx::InfoMainErase( (addr && 0xFFFF) );
+	return retValue;
+}
+
+/***************************************************************************//**
+* Modified 1xx_2xx_4xx Standard Erase Check Command
+*
+* Sets the MemoryOffset, then calls the 1xx_2xx_4xx Standard Erase Check Command
+*  
+* \param startAddr the start address of the device memory to be checked 
+* \param numBytes the length (number of bytes) of the erased memory
+*
+* \return the value returned by the connected BSL, or underlying connection layers
+******************************************************************************/
+
+uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
+{
+ 	uint16_t retValue = 0;
+	/////TO BE IMPLEMENTED!!!
+	return retValue;
+}
+
+
+/***************************************************************************//**
 * The 1xx_2xx_4xx Set Memory Offset Command
 *
 * Creates a databuffer containing a standard 1xx_2xx_4xx Set Memory Offset Command, and passes 

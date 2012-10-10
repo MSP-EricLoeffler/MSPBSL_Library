@@ -81,15 +81,14 @@ public:
 	virtual uint16_t TX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes );
 	virtual uint16_t RX_DataBlock( uint8_t* data, uint32_t startAddr16, uint32_t numBytes );
 	
-	virtual uint16_t eraseSegment(uint16_t addr);
-	virtual uint16_t InfoMainErase(uint16_t addr);     
+	virtual uint16_t eraseSegment(uint32_t addr);
+	virtual uint16_t InfoMainErase(uint32_t addr);     
 
 
 	virtual string getErrorInformation( uint16_t err );
 
-	virtual uint16_t eraseCheck( uint16_t startAddr, uint32_t numBytes );	//only in BSL versions >1.6x *
-
-	uint16_t SetMemOffset(uint16_t OffsetValue);					//only in BSL versions >2.12 *
+	virtual uint16_t eraseCheck( uint32_t startAddr, uint32_t numBytes );	//only in BSL versions >1.6x *
+	//uint16_t SetMemOffset(uint16_t OffsetValue);					//only in BSL versions >2.12 *
 
 	//* Though those commands are not implemented in some BSL versions, the derived subclasses contain some workarounds to emulate those commands
 	//  with means of the implemented commands. The user doesn't have to worry about that, as the basic usage stays the same over all BSL versions.

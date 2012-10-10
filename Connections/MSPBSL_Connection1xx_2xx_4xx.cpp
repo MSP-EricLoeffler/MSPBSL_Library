@@ -133,7 +133,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::setPC(uint32_t addr16)
 *        
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
-uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseSegment(uint16_t addr)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseSegment(uint32_t addr)
 {
   uint8_t command[7];
   command[0]=ERASE_SEGMENT_CMD;
@@ -433,7 +433,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::massErase(void)
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint16_t startAddr, uint32_t numBytes )
+uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint32_t startAddr, uint32_t numBytes )
 {
   uint8_t InfoMainEraseCommand[7];
   uint16_t retValue = 0;
@@ -482,7 +482,7 @@ uint16_t MSPBSL_Connection1xx_2xx_4xx::eraseCheck( uint16_t startAddr, uint32_t 
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection1xx_2xx_4xx::InfoMainErase(uint16_t startAddr)
+uint16_t MSPBSL_Connection1xx_2xx_4xx::InfoMainErase(uint32_t startAddr)
 {
   uint8_t InfoMainEraseCommand[7];
   uint16_t retValue = 0;

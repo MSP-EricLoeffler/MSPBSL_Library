@@ -50,10 +50,10 @@ public:
 	MSPBSL_Connection_v1_4x(string initString);
 	virtual ~MSPBSL_Connection_v1_4x(void);
 
-	// uint16_t eraseSegment(uint16_t addr); //Workaround was no good idea -> size of info segments differ between devices.
+	// uint16_t eraseSegment(uint32_t addr); //Workaround was no good idea -> size of info segments differ between devices.
 
 	virtual string getErrorInformation( uint16_t err );
 	virtual uint16_t TX_BSL_Version(string& versionString);
-	virtual uint16_t eraseCheck( uint16_t startAddr, uint32_t numBytes );
+	virtual uint16_t eraseCheck( uint32_t startAddr, uint32_t numBytes );
 };
 

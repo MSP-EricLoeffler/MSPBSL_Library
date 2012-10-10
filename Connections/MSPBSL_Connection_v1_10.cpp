@@ -428,7 +428,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_Password(void)
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection_v1_10::eraseCheck( uint16_t startAddr, uint32_t numBytes )
+uint16_t MSPBSL_Connection_v1_10::eraseCheck( uint32_t startAddr, uint32_t numBytes )
 {
 	uint16_t retValue = 0;
   

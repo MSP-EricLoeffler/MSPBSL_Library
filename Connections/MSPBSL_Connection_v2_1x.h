@@ -54,6 +54,12 @@ public:
 	virtual uint16_t TX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes );
 	virtual uint16_t RX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes ); 
 
+	virtual uint16_t TX_BSL_Version(string& versionString); 
+	virtual uint16_t eraseSegment(uint32_t addr);
+	virtual uint16_t InfoMainErase(uint32_t addr);  
+	virtual uint16_t eraseCheck( uint32_t startAddr, uint32_t numBytes ); //todo
+	virtual uint16_t setPC(uint32_t addr); 
+
 	virtual string getErrorInformation( uint16_t err );
 
 	uint16_t SetMemOffset(uint16_t OffsetValue); //implemented only in BSL versions 2.1x and above 

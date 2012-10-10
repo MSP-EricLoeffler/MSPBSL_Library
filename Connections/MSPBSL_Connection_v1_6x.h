@@ -50,7 +50,7 @@ public:
 	MSPBSL_Connection_v1_6x(string initString);
 	virtual ~MSPBSL_Connection_v1_6x(void);
 
-	// uint16_t eraseSegment(uint16_t addr); //Workaround was no good idea -> size of info segments differ between devices.
+	// uint16_t eraseSegment(uint32_t addr); //Workaround was no good idea -> size of info segments differ between devices.
 
 	virtual string getErrorInformation( uint16_t err );
 
