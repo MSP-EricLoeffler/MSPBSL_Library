@@ -101,7 +101,7 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 				currentBlockSize++;
 				datapointer++;
 			}
-			currentBlockSize++;
+			
 			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
 			numBytes -= currentBlockSize;
@@ -123,6 +123,76 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 	}
 
 	delete[] currentDataBlock;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+	return retValue;
+
+}
+
+/***************************************************************************//**
+* Modified 1xx_2xx_4xx Standard TX Data Block Command
+*
+* Sends one or more TX Data Block Commands in order to write all data in the
+* supplied array down to memory as requested
+*
+* This Command also checks if the data range crosses a 64kb boundary, uses the
+* Mem_offset command and joins the data blocks accordingly
+*
+* \param data an array of unsigned bytes to send
+* \param startAddr the start address in device memory to begin writing these bytes
+* \param numBytes the number of bytes in the array
+*        
+* \return the value returned by the connected BSL, or underlying connection layers
+******************************************************************************/
+uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes)
+{
+    uint16_t retValue = ACK;
+	uint32_t i, currentBlockAdress, currentBlockSize, datapointer;
+	uint8_t* currentDataBlock;
+	uint8_t lastblock;
+
+
+	if( (startAddr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
+	{
+		return MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(data, startAddr, numBytes);
+	}
+
+	currentDataBlock = new uint8_t[0x10000];
+	datapointer=0;
+	lastblock=0;
+	currentBlockAdress=startAddr;
+
+	while(!lastblock)
+	{
+		if( (currentBlockAdress + numBytes) > (0x10000 + (currentBlockAdress & 0xFFFF0000)) )	//not the last data block
+		{
+			currentBlockSize = (0x10000 + (currentBlockAdress & 0xFFFF0000)) - currentBlockAdress;
+			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
+			for(i=0; i<currentBlockSize; i++)
+			{
+				data[datapointer]=currentDataBlock[i];
+				datapointer++;
+			}
+			numBytes -= currentBlockSize;
+			currentBlockAdress = 0x10000 + (currentBlockAdress & 0xFFFF0000);
+		}
+		else
+		{
+			lastblock=1;
+			currentBlockSize=numBytes;
+			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
+
+			for(i=0; i<numBytes; i++)
+			{
+				data[datapointer]=currentDataBlock[i];
+				datapointer++;
+			}
+		}
+	}
+
+	delete[] currentDataBlock;
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
 	return retValue;
 
 }
