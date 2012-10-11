@@ -56,8 +56,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		//some example commands
 		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->massErase();
 		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->RX_Password();
-		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->RX_DataBlock(databuf, 0x00220, 0x2);
-		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->loadFile("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/parser_testfile.txt");
+		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->RX_DataBlock(databuf, 0x0021C, 0x2);
+		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->loadFile("parser_testfile.txt");
 		i=((MSPBSL_Connection_v1_6x*)theBSLConnection)->TX_DataBlock(databuf, 0x9000, 0x11000);
 	
 

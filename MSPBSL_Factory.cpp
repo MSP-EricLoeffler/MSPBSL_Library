@@ -223,7 +223,7 @@ string MSPBSL_Factory::expandInitString( string init )
 
 	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
 
-	ifstream t("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/MSPBSL_Device_List.txt", ifstream::out); // TODO
+	ifstream t("MSPBSL_Device_List.txt", ifstream::out); 
 	stringstream s;
 	s << t.rdbuf();
 	string replaceList = s.str();
