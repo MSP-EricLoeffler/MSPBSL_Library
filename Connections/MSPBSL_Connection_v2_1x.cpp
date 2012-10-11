@@ -82,7 +82,7 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 
 	if( (startAddr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
 	{
-		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+		retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 		return MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(data, startAddr, numBytes);
 	}
 
@@ -103,7 +103,7 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 				datapointer++;
 			}
 			
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
 			numBytes -= currentBlockSize;
 			currentBlockAdress = 0x10000 + (currentBlockAdress & 0xFFFF0000);
@@ -118,13 +118,13 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 				currentBlockSize++;
 				datapointer++;
 			}
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
 		}
 	}
 
 	delete[] currentDataBlock;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 	return retValue;
 
 }
@@ -153,7 +153,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 
 	if( (startAddr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
 	{
-		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+		retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 		return MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(data, startAddr, numBytes);
 	}
 
@@ -167,7 +167,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 		if( (currentBlockAdress + numBytes) > (0x10000 + (currentBlockAdress & 0xFFFF0000)) )	//not the last data block
 		{
 			currentBlockSize = (0x10000 + (currentBlockAdress & 0xFFFF0000)) - currentBlockAdress;
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
 			for(i=0; i<currentBlockSize; i++)
 			{
@@ -181,7 +181,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 		{
 			lastblock=1;
 			currentBlockSize=numBytes;
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(currentDataBlock, (currentBlockAdress & 0xFFFF), currentBlockSize);
 
 			for(i=0; i<numBytes; i++)
@@ -193,7 +193,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 	}
 
 	delete[] currentDataBlock;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 	return retValue;
 
 }
@@ -215,7 +215,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 uint16_t MSPBSL_Connection_v2_1x::TX_BSL_Version(string& versionString)
 {
 	uint16_t retValue = 0;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);
 	retValue |= MSPBSL_Connection_v2_xx::TX_BSL_Version(versionString);
 	return retValue;
 }
@@ -234,7 +234,7 @@ uint16_t MSPBSL_Connection_v2_1x::TX_BSL_Version(string& versionString)
 uint16_t MSPBSL_Connection_v2_1x::setPC(uint32_t addr)
 {
 	uint16_t retValue = 0;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset( ((addr >> 16) && 0xFFFF) );
 	retValue |= MSPBSL_Connection1xx_2xx_4xx::setPC( (addr && 0xFFFF) );
 	return retValue;
 }
@@ -251,7 +251,7 @@ uint16_t MSPBSL_Connection_v2_1x::setPC(uint32_t addr)
 uint16_t MSPBSL_Connection_v2_1x::eraseSegment(uint32_t addr)
 {
 	uint16_t retValue = 0;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset( ((addr >> 16) && 0xFFFF) );
 	retValue |= MSPBSL_Connection1xx_2xx_4xx::eraseSegment( (addr && 0xFFFF) );
 	return retValue;
 }
@@ -264,11 +264,11 @@ uint16_t MSPBSL_Connection_v2_1x::eraseSegment(uint32_t addr)
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection_v2_1x::InfoMainErase(uint32_t addr)
+uint16_t MSPBSL_Connection_v2_1x::eraseInfoMain(uint32_t addr)
 {
 	uint16_t retValue = 0;
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset( ((addr >> 16) && 0xFFFF) );
-	retValue |= MSPBSL_Connection1xx_2xx_4xx::InfoMainErase( (addr && 0xFFFF) );
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset( ((addr >> 16) && 0xFFFF) );
+	retValue |= MSPBSL_Connection1xx_2xx_4xx::eraseInfoMain( (addr && 0xFFFF) );
 	return retValue;
 }
 
@@ -291,7 +291,7 @@ uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
 
 	if( (addr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
 	{
-		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+		retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 		return (retValue | MSPBSL_Connection_v2_xx::eraseCheck(addr, numBytes));
 	}
 
@@ -303,7 +303,7 @@ uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
 		if( (currentBlockAdress + numBytes) > (0x10000 + (currentBlockAdress & 0xFFFF0000)) )	//not the last data block
 		{
 			currentBlockSize = (0x10000 + (currentBlockAdress & 0xFFFF0000)) - currentBlockAdress;
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection_v2_xx::eraseCheck((currentBlockAdress & 0xFFFF), currentBlockSize);
 			numBytes -= currentBlockSize;
 			currentBlockAdress = 0x10000 + (currentBlockAdress & 0xFFFF0000);
@@ -312,11 +312,11 @@ uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
 		{
 			lastblock=1;
 			currentBlockSize=numBytes;
-			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_1x::setMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
 			retValue |= MSPBSL_Connection_v2_xx::eraseCheck((currentBlockAdress & 0xFFFF), currentBlockSize);
 		}
 	}
-	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+	retValue |= MSPBSL_Connection_v2_1x::setMemOffset(0);	//reset Mem Offset
 	return retValue;
 }
 
@@ -334,19 +334,19 @@ uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection_v2_1x::SetMemOffset(uint16_t OffsetValue)
+uint16_t MSPBSL_Connection_v2_1x::setMemOffset(uint16_t OffsetValue)
 {
-  uint8_t SetMemOffsetCommand[7];
+  uint8_t setMemOffsetCommand[7];
   uint16_t retValue = 0;
-  SetMemOffsetCommand[0] = SET_MEM_OFFSET_CMD;
-  SetMemOffsetCommand[1] = 0x04;
-  SetMemOffsetCommand[2] = 0x04;
-  SetMemOffsetCommand[3] = 0x00;					// AL
-  SetMemOffsetCommand[4] = 0x00;	 				// AH
-  SetMemOffsetCommand[5] = ((OffsetValue)&0xFF);
-  SetMemOffsetCommand[6] = ((OffsetValue>>8)&0xFF);
+  setMemOffsetCommand[0] = SET_MEM_OFFSET_CMD;
+  setMemOffsetCommand[1] = 0x04;
+  setMemOffsetCommand[2] = 0x04;
+  setMemOffsetCommand[3] = 0x00;					// AL
+  setMemOffsetCommand[4] = 0x00;	 				// AH
+  setMemOffsetCommand[5] = ((OffsetValue)&0xFF);
+  setMemOffsetCommand[6] = ((OffsetValue>>8)&0xFF);
 
-   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(SetMemOffsetCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(setMemOffsetCommand, 7);
 
 	if( retValue != ACK )
 	{

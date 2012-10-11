@@ -62,10 +62,10 @@ public:
 	virtual uint16_t massErase(void);
 	virtual uint16_t TX_BSL_Version(string& versionString);
 	virtual uint16_t eraseCheck( uint32_t startAddr, uint32_t numBytes );
-	//virtual uint16_t InfoMainErase(uint32_t addr);  //Workaround possible, but not able to reproduce bug
+	//virtual uint16_t eraseInfoMain(uint32_t addr);  //Workaround possible, but not able to reproduce bug
 
 	virtual string getErrorInformation( uint16_t err );
 
-	uint16_t load_patch(void);
+	uint16_t loadPatch(void);
 };
 

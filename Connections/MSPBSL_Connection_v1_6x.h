@@ -55,7 +55,7 @@ public:
 	virtual string getErrorInformation( uint16_t err );
 
 
-	uint16_t ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 );  //only available in derived classes >1.6x
+	uint16_t changeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 );  //only available in derived classes >1.6x
 
 
 };

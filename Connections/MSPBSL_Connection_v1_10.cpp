@@ -78,7 +78,7 @@ uint16_t MSPBSL_Connection_v1_10::TX_DataBlock( uint8_t* data, uint32_t startAdd
 	uint16_t retValue = 0;
 	if(patch_loaded == NO)
 	{
-		retValue = load_patch();
+		retValue = loadPatch();
 	}
 	if(retValue != ACK)
 	{
@@ -170,7 +170,7 @@ uint16_t MSPBSL_Connection_v1_10::RX_DataBlock( uint8_t* data, uint32_t startAdd
 	uint16_t retvalue = 0;
 	if(patch_loaded == NO)
 	{
-		retvalue = load_patch();
+		retvalue = loadPatch();
 	}
 	if(retvalue != ACK)
 	{
@@ -305,7 +305,7 @@ uint16_t MSPBSL_Connection_v1_10::TX_BSL_Version(string& versionString)
 *
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection_v1_10::load_patch(void)
+uint16_t MSPBSL_Connection_v1_10::loadPatch(void)
 {
 	//BSL has to be unlocked first!
 	uint8_t i = 0;
