@@ -57,7 +57,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		i=theBSLConnection->massErase();
 		i=theBSLConnection->RX_Password();
 		i=((MSPBSL_Connection_v2_1x*)theBSLConnection)->RX_DataBlock(databuf, 0x00220, 0x2);
-		i=((MSPBSL_Connection_v2_1x*)theBSLConnection)->Load_File("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/parser_testfile.txt");
+		i=((MSPBSL_Connection_v2_1x*)theBSLConnection)->loadFile("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/parser_testfile.txt");
 		i=((MSPBSL_Connection_v2_1x*)theBSLConnection)->TX_DataBlock(databuf, 0x9000, 0x11000);
 	
 

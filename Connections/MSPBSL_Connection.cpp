@@ -97,7 +97,7 @@ uint8_t MSPBSL_Connection::hextoint(char hex){
 * 
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection::Load_File(string datalocation)
+uint16_t MSPBSL_Connection::loadFile(string datalocation)
 {
 	uint16_t retValue = ACK;
 	uint32_t i,j,block_start, block_end, block_offset=0, startadress, datasize, datapointer;
