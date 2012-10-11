@@ -90,6 +90,6 @@ public:
 	virtual MSPBSL_PacketHandler* getPacketHandler();
 	virtual void setPacketHandler(MSPBSL_PacketHandler* protocol);
 
-	uint16_t Load_File(string file);
+	uint16_t Load_File(string datalocation);
 	uint8_t hextoint(char c);
 };

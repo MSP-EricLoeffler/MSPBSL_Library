@@ -78,10 +78,11 @@ uint16_t MSPBSL_Connection_v2_1x::RX_DataBlock(uint8_t* data, uint32_t startAddr
 	uint32_t i, currentBlockAdress, currentBlockSize, datapointer;
 	uint8_t* currentDataBlock;
 	uint8_t lastblock;
-
+	
 
 	if( (startAddr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
 	{
+		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
 		return MSPBSL_Connection1xx_2xx_4xx::RX_DataBlock(data, startAddr, numBytes);
 	}
 
@@ -150,9 +151,9 @@ uint16_t MSPBSL_Connection_v2_1x::TX_DataBlock( uint8_t* data, uint32_t startAdd
 	uint8_t* currentDataBlock;
 	uint8_t lastblock;
 
-
 	if( (startAddr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
 	{
+		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
 		return MSPBSL_Connection1xx_2xx_4xx::TX_DataBlock(data, startAddr, numBytes);
 	}
 
@@ -284,8 +285,38 @@ uint16_t MSPBSL_Connection_v2_1x::InfoMainErase(uint32_t addr)
 
 uint16_t MSPBSL_Connection_v2_1x::eraseCheck( uint32_t addr, uint32_t numBytes )
 {
- 	uint16_t retValue = 0;
-	/////TO BE IMPLEMENTED!!!
+	uint16_t retValue = ACK;
+	uint32_t currentBlockAdress, currentBlockSize;
+	uint8_t lastblock;
+
+	if( (addr + numBytes) <= 0x10000)	//Block doesn't cross boundaries and stays in adressrange < 0x10000 
+	{
+		retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
+		return (retValue | MSPBSL_Connection_v2_xx::eraseCheck(addr, numBytes));
+	}
+
+	lastblock=0;
+	currentBlockAdress=addr;
+
+	while(!lastblock)
+	{
+		if( (currentBlockAdress + numBytes) > (0x10000 + (currentBlockAdress & 0xFFFF0000)) )	//not the last data block
+		{
+			currentBlockSize = (0x10000 + (currentBlockAdress & 0xFFFF0000)) - currentBlockAdress;
+			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_xx::eraseCheck((currentBlockAdress & 0xFFFF), currentBlockSize);
+			numBytes -= currentBlockSize;
+			currentBlockAdress = 0x10000 + (currentBlockAdress & 0xFFFF0000);
+		}
+		else
+		{
+			lastblock=1;
+			currentBlockSize=numBytes;
+			retValue |= MSPBSL_Connection_v2_1x::SetMemOffset((currentBlockAdress >> 16 ) & 0xFFFF);
+			retValue |= MSPBSL_Connection_v2_xx::eraseCheck((currentBlockAdress & 0xFFFF), currentBlockSize);
+		}
+	}
+	retValue |= MSPBSL_Connection_v2_1x::SetMemOffset(0);	//reset Mem Offset
 	return retValue;
 }
 

@@ -97,17 +97,17 @@ uint8_t MSPBSL_Connection::hextoint(char hex){
 * 
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection::Load_File(string file)
+uint16_t MSPBSL_Connection::Load_File(string datalocation)
 {
 	uint16_t retValue = ACK;
 	uint32_t i,j,block_start, block_end, block_offset=0, startadress, datasize, datapointer;
 	uint8_t lastblock=0;
 	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
 	string hexchars = "0123456789abcdefABCDEF";
-	ifstream txt(file, ifstream::out); 
+	ifstream txt(datalocation, ifstream::out); 
 	stringstream s;
 	s << txt.rdbuf();
-	string filestring = s.str();
+	string file = s.str();
 	txt.close();
 
 	while(!lastblock)
@@ -115,7 +115,7 @@ uint16_t MSPBSL_Connection::Load_File(string file)
 		//get start and end of current data block
 		block_start=file.find("@", block_offset);	
 		block_end=file.find_first_of("@q", block_start+1);
-		block_offset=block_end+1;
+		block_offset=block_end;
 		uint8_t* data;
 		if(file[block_end] == 'q')
 		{
@@ -152,16 +152,11 @@ uint16_t MSPBSL_Connection::Load_File(string file)
 			//low nibble
 			data[datapointer] += hextoint(file[i]);
 
-			if(hextoint(file[i]) == 255)
-			{
-				return TXT_FILE_PARSER_ERROR;
-			}
-
 			i++;
 			datapointer++;
 		}
 
-		datasize = datapointer + 1;
+		datasize = datapointer;
 		retValue |= RX_DataBlock(data, startadress, datasize);
 		delete[] data;
 	}//parser mainloop
