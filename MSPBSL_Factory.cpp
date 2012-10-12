@@ -223,7 +223,9 @@ string MSPBSL_Factory::expandInitString( string init )
 
 	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
 
-	ifstream t("MSPBSL_Device_List.txt", ifstream::out); 
+	ifstream t("MSPBSL_Device_List.txt", ifstream::out); // for testing purposes with VisualStudio, this file should be in the same
+													     // folder as the *.vcxproj files. e.g. in  $ProjectDir\BSL_DLL
+														 // Absolute data paths work as well.
 	stringstream s;
 	s << t.rdbuf();
 	string replaceList = s.str();
@@ -231,6 +233,11 @@ string MSPBSL_Factory::expandInitString( string init )
 
 	init += ","; // add string at back since we search for strings with comma following (to distinguish between A/non-A versions)
 	k=0;
+
+	if(replaceList.size() == 0)
+	{
+		return init;
+	}
 
 	while( (replaceList.find(init) != string::npos) && (k < 100) )
 	{

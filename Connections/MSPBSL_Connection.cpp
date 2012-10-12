@@ -188,7 +188,12 @@ string MSPBSL_Connection::getErrorInformation( uint16_t err )
 	case (UNEXPECTED_VALUE):
 		return "an unexpected value was received by the BSL connection";
 		break;
+	case (DATA_VERIFICATION_ERROR):
+		return "the data verification was not successful";
+		break;
+	case (TXT_FILE_PARSER_ERROR):
+		return "an error occured during the parsing of the txt file";
+		break;
 	}
 	return thePacketHandler->getErrorInformation( err );
 }
-
