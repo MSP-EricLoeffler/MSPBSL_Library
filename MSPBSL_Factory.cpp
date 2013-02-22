@@ -178,11 +178,11 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		{
 			theBSLConnection = new MSPBSL_Connection_v1_6x( initString );
 		}
-		else if(initString.find( UART_202_STRING ) !=string::npos )
+		else if(initString.find( UART_202_STRING ) != string::npos )
 		{
 			theBSLConnection = new MSPBSL_Connection_v2_xx( initString );
 		}
-		else if(initString.find( UART_21X_STRING ) !=string::npos )
+		else if(initString.find( UART_21X_STRING ) != string::npos )
 		{
 			theBSLConnection = new MSPBSL_Connection_v2_1x( initString );
 		}
@@ -198,6 +198,10 @@ MSPBSL_Connection* MSPBSL_Factory::getMSPBSL_Connection(string initString)
 		p->setPhysicalInterface( s );
 		theBSLConnection->setPacketHandler(p);
 	} // all 1xx/2xx/4xx UART BSLs handled
+	else
+	{
+		return NULL;	//no init String was found in the DeviceList.txt
+	}
 
 	return theBSLConnection;
 }
@@ -219,7 +223,9 @@ string MSPBSL_Factory::expandInitString( string init )
 
 	string ignore = "\b\t\n\r\f\v "; //ignore those characters if they are between the strings. 
 
-	ifstream t("C:/Documents and Settings/x0189394/Desktop/MSPDLL_LaneWestlund/BSL_DLL/Debug/MSPBSL_Device_List.txt", ifstream::out); // TODO
+	ifstream t("MSPBSL_Device_List.txt", ifstream::out); // for testing purposes with VisualStudio, this file should be in the same
+													     // folder as the *.vcxproj files. e.g. in  $ProjectDir\BSL_DLL
+														 // Absolute data paths work as well.
 	stringstream s;
 	s << t.rdbuf();
 	string replaceList = s.str();
@@ -227,6 +233,11 @@ string MSPBSL_Factory::expandInitString( string init )
 
 	init += ","; // add string at back since we search for strings with comma following (to distinguish between A/non-A versions)
 	k=0;
+
+	if(replaceList.size() == 0)
+	{
+		return init;
+	}
 
 	while( (replaceList.find(init) != string::npos) && (k < 100) )
 	{

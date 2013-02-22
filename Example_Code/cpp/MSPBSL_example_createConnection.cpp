@@ -1,7 +1,7 @@
 /*
- * MSPBSL_Connection_v2_1x
+ * MSPBSL createConnection example file
  *
- * A subclass to add bugfixes and enhance functionality
+ * This code demonstrates the creation of a ConnectionClass using the Factory.
  *
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
@@ -36,32 +36,46 @@
  *
 */
 
-
-
-
-#pragma once
+#include "stdafx.h"
+#include <boost/thread.hpp>
 #include <string>
+#include "MSPBSL_PhysicalInterfaceSerialUART.h"
+#include "MSPBSL_Connection5xxUSB.h"
+#include "MSPBSL_PacketHandler5xxUART.h"
+#include "MSPBSL_PacketHandler1xx_2xx_4xxUART.h"
+#include "MSPBSL_Factory.h"
+#include "MSPBSL_Connection5xxUART.h"
 #include "MSPBSL_Connection1xx_2xx_4xx.h"
+#include "MSPBSL_Connection_v1_10.h"
+#include "MSPBSL_ConnectionFRAMFamily.h"
+#include "MSPBSL_CRCEngine.h"
+#include "MSPBSL_Connection_v1_6x.h"
 #include "MSPBSL_Connection_v2_xx.h"
+#include "MSPBSL_Connection_v2_1x.h"
+#include "MSPBSL_Connection_v1_4x.h"
+#include "MSPBSL_Connection_v1_3x.h"
 
-class MSPBSL_Connection_v2_1x : public MSPBSL_Connection_v2_xx
+ 
+int _tmain(int argc, _TCHAR* argv[])
 {
-public:
 
-	MSPBSL_Connection_v2_1x(string initString);
-	virtual ~MSPBSL_Connection_v2_1x(void);
+//	This is an example of how the standart initStrings look like.	
+//	The Factory uses this string togther with the DeviceList.txt to initialize all underlying layers
+//	See DeviceList.txt for further information and if you want to add new devices.
 
-	virtual uint16_t TX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes );
-	virtual uint16_t RX_DataBlock( uint8_t* data, uint32_t startAddr, uint32_t numBytes ); 
+		string initString = "DEVICE:MSP430F149"; 
+		
 
-	virtual uint16_t TX_BSL_Version(string& versionString); 
-	virtual uint16_t eraseSegment(uint32_t addr);
-	virtual uint16_t eraseInfoMain(uint32_t addr);  
-	virtual uint16_t eraseCheck( uint32_t startAddr, uint32_t numBytes ); 
-	virtual uint16_t setPC(uint32_t addr); 
+//	Call the factory to initialize and get the connection.
 
-	virtual string getErrorInformation( uint16_t err );
+		MSPBSL_Connection* theBSLConnection = MSPBSL_Factory::getMSPBSL_Connection(initString);
 
-	uint16_t setMemOffset(uint16_t OffsetValue); //implemented only in BSL versions 2.1x and above 
+//	Before using the BSL, it has to be invoked.
+//	This is being done by calling the invokeBSL() function of the physical interface layer.
 
-};
+		((theBSLConnection->getPacketHandler())->getPhysicalInterface())->invokeBSL();
+
+//	Now the BSL is ready to recieve and execute commands. 
+
+       return 0;
+}

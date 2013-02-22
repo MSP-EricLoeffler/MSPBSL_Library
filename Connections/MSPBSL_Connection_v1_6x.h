@@ -50,12 +50,12 @@ public:
 	MSPBSL_Connection_v1_6x(string initString);
 	virtual ~MSPBSL_Connection_v1_6x(void);
 
-	// uint16_t eraseSegment(uint16_t addr); //Workaround was no good idea -> size of info segments differ between devices.
+	// uint16_t eraseSegment(uint32_t addr); //Workaround was no good idea -> size of info segments differ between devices.
 
 	virtual string getErrorInformation( uint16_t err );
 
 
-	uint16_t ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 );  //only available in derived classes >1.6x
+	uint16_t changeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 );  //only available in derived classes >1.6x
 
 
 };

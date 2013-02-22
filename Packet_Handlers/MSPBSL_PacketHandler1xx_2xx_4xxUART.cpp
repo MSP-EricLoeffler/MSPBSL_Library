@@ -295,6 +295,21 @@ string MSPBSL_PacketHandler1xx_2xx_4xxUART::getErrorInformation( uint16_t err )
 	case ( UART_CHECKSUM_INCORRECT ):
 		return "An incorrect checksum was seen on a recieved packet";
 		break;
+	case (UART_SYNC_HANDSHAKE_ERROR):
+		return "The BSL did not acknowledge the synchronization byte";
+		break;
+	case (UART_DATA_FRAME_CORRUPT):
+		return "The data frame is corrupt and does not match the specifications.";
+		break;
+	case (UART_DATA_NAK):
+		return "The BSL has responded with a DATA_NAK byte 0xA0";
+		break;
+	case (UART_UNEXPECTED_MESSAGE):
+		return "The BSL responded with a byte that was neither DATA_NAK (0xA0) nor DATA_ACK (0x90)";
+		break;
 	}
+
 	return MSPBSL_PacketHandler::getErrorInformation( err );
 }
+
+

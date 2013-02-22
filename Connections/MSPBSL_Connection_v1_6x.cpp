@@ -74,19 +74,19 @@ MSPBSL_Connection_v1_6x::~MSPBSL_Connection_v1_6x(void)
 * \return the value returned by the connected BSL, or underlying connection layers
 ******************************************************************************/
 
-uint16_t MSPBSL_Connection_v1_6x::ChangeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 )
+uint16_t MSPBSL_Connection_v1_6x::changeBaudrate( uint8_t D1, uint8_t D2, uint8_t D3 )
 {
-  uint8_t ChangeBaudrateCommand[7];
+  uint8_t changeBaudrateCommand[7];
   uint16_t retValue = 0;
-  ChangeBaudrateCommand[0] = CHANGE_BAUD_RATE_CMD;
-  ChangeBaudrateCommand[1] = 0x04;
-  ChangeBaudrateCommand[2] = 0x04;
-  ChangeBaudrateCommand[3] = D1;				
-  ChangeBaudrateCommand[4] = D2;	 				
-  ChangeBaudrateCommand[5] = D3;
-  ChangeBaudrateCommand[6] = 0x00;
+  changeBaudrateCommand[0] = CHANGE_BAUD_RATE_CMD;
+  changeBaudrateCommand[1] = 0x04;
+  changeBaudrateCommand[2] = 0x04;
+  changeBaudrateCommand[3] = D1;				
+  changeBaudrateCommand[4] = D2;	 				
+  changeBaudrateCommand[5] = D3;
+  changeBaudrateCommand[6] = 0x00;
 
-   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(ChangeBaudrateCommand, 7);
+   retValue |= thePacketHandler1xx_2xx_4xx->TX_Packet_expectACK(changeBaudrateCommand, 7);
 
 	if( retValue != ACK )
 	{
