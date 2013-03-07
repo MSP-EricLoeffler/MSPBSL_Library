@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Connection Headers">
+      <UniqueIdentifier>{01530163-c8a7-4ef8-a13c-f0be676edadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Connection Source">
+      <UniqueIdentifier>{4f14cd89-634e-4ec6-9031-3d934760f4f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Packet Handler Headers">
+      <UniqueIdentifier>{b6585692-119f-42c8-bc25-dec927f53008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Packet Handler Source">
+      <UniqueIdentifier>{df5caaed-e74e-447e-acd9-7d6af2a26dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physical Interface Headers">
+      <UniqueIdentifier>{5c6c85a9-314c-4716-97e5-0a5040717835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physical Interface Source">
+      <UniqueIdentifier>{be37a188-040b-4e82-a80b-22ee607b9b07}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection1xx_2xx_4xx.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection5438Family.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection5xx.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection5xxUART.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection5xxUSB.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v1_10.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v1_3x.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v1_4x.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v1_6x.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v2_1x.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_Connection_v2_xx.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Connections\MSPBSL_ConnectionFRAMFamily.h">
+      <Filter>Header Files\Connection Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler.h">
+      <Filter>Header Files\Packet Handler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler1xx_2xx_4xxUART.h">
+      <Filter>Header Files\Packet Handler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler5xxUART.h">
+      <Filter>Header Files\Packet Handler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler5xxUSB.h">
+      <Filter>Header Files\Packet Handler Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Physical_Interfaces\MSPBSL_PhysicalInterface.h">
+      <Filter>Header Files\Physical Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Physical_Interfaces\MSPBSL_PhysicalInterfaceSerialUART.h">
+      <Filter>Header Files\Physical Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Physical_Interfaces\MSPBSL_PhysicalInterfaceUSB.h">
+      <Filter>Header Files\Physical Interface Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Utility_Classes\MSPBSL_CRCEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Utility_Classes\MSPBSL_RAM_BSL.00.05.04.34.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Utility_Classes\MSPBSL_TestResetControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\MSPBSL_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hdiapi\hidapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection1xx_2xx_4xx.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection5438Family.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection5xx.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection5xxUART.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection5xxUSB.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v1_10.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v1_3x.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v1_4x.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v1_6x.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v2_1x.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_Connection_v2_xx.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Connections\MSPBSL_ConnectionFRAMFamily.cpp">
+      <Filter>Source Files\Connection Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Packet_Handlers\MSPBSL_PacketHander.cpp">
+      <Filter>Source Files\Packet Handler Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler1xx_2xx_4xxUART.cpp">
+      <Filter>Source Files\Packet Handler Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler5xxUART.cpp">
+      <Filter>Source Files\Packet Handler Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Packet_Handlers\MSPBSL_PacketHandler5xxUSB.cpp">
+      <Filter>Source Files\Packet Handler Source</Filter>
+    </ClCompile>
+    <ClCompile Include="5xx_UART_Demo_1.cpp">
+      <Filter>Source Files\Physical Interface Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Physical_Interfaces\MSPBSL_PhysicalInterfaceSerialUART.cpp">
+      <Filter>Source Files\Physical Interface Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Physical_Interfaces\MSPBSL_PhysicalInterfaceUSB.cpp">
+      <Filter>Source Files\Physical Interface Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Utility_Classes\MSPBSL_CRCEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MSPBSL_Factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Example_Code\cpp\MSPBSL_example_5xx_UART_download.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\hdiapi\hidapi.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\hdiapi\hidapi.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

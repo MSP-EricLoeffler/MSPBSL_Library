@@ -87,7 +87,7 @@ uint16_t MSPBSL_PacketHandler5xxUART::TX_Packet( uint8_t* buf, uint16_t bufSize 
 		return SENT_PACKET_SIZE_EXCEEDS_BUFFER;
 	} 
 	// TODO: CHANGE TO INIT STRING BASED
-    MSPBSL_CRCEngine crcEngine("5xx_CRC");
+    MSPBSL_CRCEngine crcEngine("5/6xx");
 	crcEngine.initEngine( 0xFFFF );
 	crcEngine.addBytes(buf,bufSize);
 

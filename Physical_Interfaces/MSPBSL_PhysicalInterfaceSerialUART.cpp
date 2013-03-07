@@ -217,6 +217,9 @@ void MSPBSL_PhysicalInterfaceSerialUART::invokeBSL(uint16_t method)
 	}
 	
 	boost::this_thread::sleep(boost::posix_time::milliseconds(250)); 
+	port->set_option( serial_port_base::baud_rate( 9601 )  );
+	port->set_option( serial_port_base::baud_rate( 9600 )  );
+	boost::this_thread::sleep(boost::posix_time::milliseconds(250)); 
 
 }
 
