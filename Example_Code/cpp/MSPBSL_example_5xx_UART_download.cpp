@@ -40,6 +40,7 @@
 #include <string>
 #include "MSPBSL_Factory.h"
 
+// Note: to run this application, the output directory must contain the HID API library
 // Note: this project assumes the following directory structure:
 // Base_dir/
 //    MSPBSL_Library/Example_Project_Files/MS_Visual_Studio_Express_2012/5xx_UART_Demo_1
@@ -47,7 +48,6 @@
 //    boost_1_53_0/
 //       stage/lib/
 //       boost/
-
 int main(int argc, _TCHAR* argv[])
 {
 	uint8_t deviceMemory[32];
